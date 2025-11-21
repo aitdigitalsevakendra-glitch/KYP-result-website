@@ -1,53 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hi">
 <head>
   <meta charset="utf-8" />
-  <title>Refund Status Check</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Refund Status Check</title>
   <style>
-    body{font-family:Arial,Helvetica,sans-serif; background:#f5f7fb; display:flex; align-items:center; flex-direction:column; padding:40px 10px;}
-    .card{width:420px; background:#fff; border-radius:12px; padding:24px; box-shadow:0 6px 20px rgba(0,0,0,0.08); text-align:center;}
-    h2{margin:0 0 14px 0}
-    input{width:92%; padding:11px; margin:8px 0; border-radius:6px; border:1px solid #cfd8e3; font-size:15px}
-    button{width:94%; padding:12px; margin-top:10px; border-radius:6px; border:none; background:#007bff; color:#fff; font-weight:600; cursor:pointer}
-    #result{margin-top:14px; text-align:left; padding:12px; border-radius:6px}
-    .ok{background:#e9f7ef; color:#125a2b}
-    .err{background:#fdecea; color:#721c24}
-
-    .row{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #eee}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background:#f5f7fb; margin:0}
+    .card{width:420px; margin:70px auto; background:#fff; padding:26px; border-radius:10px; box-shadow:0 6px 18px rgba(12,20,40,0.06)}
+    h1{text-align:center;margin:0 0 14px;font-size:22px}
+    input{width:100%; padding:10px 12px; margin:8px 0; border-radius:6px; border:1px solid #e6eef6}
+    button{width:100%; padding:10px; border-radius:6px; background:#0b79ff; color:#fff; border:0; font-weight:600}
+    #result.err{background:#fdecea; color:#7d1d12; padding:10px; border-radius:6px; margin-top:10px}
+    #result.ok{background:#f6fffa; color:#0b6623; padding:10px; border-radius:6px; margin-top:10px}
+    .row{display:flex; justify-content:space-between; margin:6px 0}
     .label{font-weight:600; color:#333}
-    .val{color:#111}
-    small.note{display:block; margin-top:8px; color:#555; font-size:13px}
+    .val{color:#444}
+    .small{font-size:13px; color:#666; text-align:center; margin-top:10px}
 
-    .footer{margin-top:20px; text-align:center; color:#333; font-size:14px;}
+    /* Footer Left Fixed */
+    .footer-left{
+      position:fixed;
+      bottom:10px;
+      left:15px;
+      font-size:14px;
+      color:#333;
+      line-height:18px;
+    }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <h2>Refund Status Check</h2>
+    <h1>Refund Status Check</h1>
 
-    <input id="code" placeholder="Learner Code डालें" />
-    <input id="name" placeholder="Student Name डालें" />
+    <input id="code" placeholder="Learner Code (उदा. 3653...)" />
+    <input id="name" placeholder="Student Name (उदा. SADAF NAYAB)" />
+
     <button id="check">Check Status</button>
 
-    <div id="result"></div>
+    <div id="result" class=""></div>
+    <div class="small">Enter exact Learner Code and Student Name.</div>
+  </div>
 
-    <small class="note">Enter exact Learner Code and Student Name.</small>
+  <!-- FIXED LEFT FOOTER -->
+  <div class="footer-left">
+    ☎ Helpline: 7033151758<br>
+    Developed by <strong>AIT DIGITAL SEVA KENDRA</strong>
   </div>
 
   <script>
+    const DATA_URL = '/mnt/data/results.json'; 
+
     async function loadData(){
       try {
-        const res = await fetch('results.json');
-        return await res.json();
-      } catch (e) {
-        console.error(e);
+        const res = await fetch(DATA_URL);
+        const raw = await res.json();
+
+        const mapped = raw.map(d => ({
+          learner_code: String(d['Unnamed: 1'] || '').trim(),
+          name: String(d['Unnamed: 2'] || '').trim().toUpperCase(),
+          invoice: d['Unnamed: 3'] || '',
+          amount: d['Unnamed: 5'] || '',
+          advice_date: d['Unnamed: 6'] || '',
+          center_name: d['Center Name'] || '',
+          center_code: d['Center Code'] || '',
+          center_manager: d['Center Manager'] || '',
+          center_contact: d['Contact Number'] || ''
+        }));
+
+        return mapped;
+      } catch(e){
         return [];
       }
     }
 
-    function showMessage(html, cls='ok'){
+    function showMessage(html, cls='err'){
       const r = document.getElementById('result');
       r.className = cls;
       r.innerHTML = html;
@@ -62,22 +89,22 @@
         const name = (document.getElementById('name').value||'').trim().toUpperCase();
 
         if(!code || !name){
-          showMessage('<div class="err">कृपया दोनों फील्ड भरें।</div>', 'err');
+          showMessage("कृपया दोनों फील्ड भरें।","err");
           return;
         }
 
-        const found = data.find(d => 
-          String(d.learner_code).trim() === String(code).trim() &&
-          String(d.name).trim().toUpperCase() === name
+        const found = data.find(d =>
+          String(d.learner_code) === code &&
+          (d.name).toUpperCase() === name
         );
 
         if(!found){
-          showMessage('<div class="err">Record Not Found!</div>', 'err');
+          showMessage("Record Not Found!","err");
           return;
         }
 
         const html = `
-          <div style="padding:6px 0">
+          <div style="padding:8px 0">
             <div class="row"><div class="label">Learner</div><div class="val">${found.name}</div></div>
             <div class="row"><div class="label">Invoice</div><div class="val">${found.invoice}</div></div>
             <div class="row"><div class="label">Amount</div><div class="val">₹${found.amount}</div></div>
@@ -90,7 +117,7 @@
               <div class="row"><div class="label">Center Name</div><div class="val">${found.center_name}</div></div>
               <div class="row"><div class="label">Center Code</div><div class="val">${found.center_code}</div></div>
               <div class="row"><div class="label">Center Manager</div><div class="val">${found.center_manager}</div></div>
-              <div class="row"><div class="label">Contact Number</div><div class="val">${found.center_contact}</div></div>
+              <div class="row"><div class="label">Contact</div><div class="val">${found.center_contact}</div></div>
             </div>
 
             <div style="margin-top:8px; font-size:12px; color:#555">
@@ -98,16 +125,10 @@
             </div>
           </div>
         `;
-        showMessage(html, 'ok');
+        showMessage(html,"ok");
       });
+
     })();
   </script>
-
-  <!-- FOOTER -->
-  <div class="footer">
-      📞 <b>Helpline:</b> 7033151758 <br>
-      Developed by <b>Ektab Alam</b>
-  </div>
-
 </body>
 </html>
