@@ -1,146 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Website Under Maintenance</title>
-<style>
-  :root{--bg1:#0d6efd;--bg2:#6610f2;--card-bg:rgba(255,255,255,0.12);--accent:#ffdf00}
-  html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif}
-  body{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,var(--bg1),var(--bg2));
-    color:#fff;
-    position:relative;
-    padding-bottom:80px; /* space for footer */
-  }
-  .wrap{
-    width:95%;max-width:760px;
-    padding:28px;border-radius:16px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-    box-shadow:0 12px 40px rgba(0,0,0,0.25);
-    backdrop-filter: blur(6px);
-  }
-  .top{display:flex;align-items:center;gap:16px}
-  .logo{width:84px;height:84px;border-radius:12px;background:#ffffff10;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
-  .logo img{max-width:100%;max-height:100%;display:block}
-  .title{flex:1}
-  h1{margin:0;font-size:22px;letter-spacing:0.2px}
-  p.lead{margin:6px 0 0 0;opacity:0.95}
-  .card{margin-top:18px;background:var(--card-bg);padding:20px;border-radius:12px}
-  .timer{display:flex;gap:12px;justify-content:center;margin:12px 0}
-  .timebox{min-width:76px;background:rgba(0,0,0,0.12);padding:12px;border-radius:10px;text-align:center}
-  .timebox .num{font-size:20px;font-weight:700}
-  .timebox .lbl{font-size:12px;opacity:0.9;margin-top:6px}
-  .note{text-align:center;margin-top:8px;color:#fff9; font-size:14px}
-  
-  /* NEW BOTTOM RIGHT FOOTER */
-  .footer-fixed{
-    position:fixed;
-    bottom:12px;
-    right:18px;
-    text-align:right;
-    font-size:14px;
-    color:#fff;
-    opacity:0.9;
-  }
+  <meta charset="utf-8" />
+  <title>Refund Status Check</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif; background:#f5f7fb; display:flex; align-items:center; flex-direction:column; padding:40px 10px;}
+    .card{width:420px; background:#fff; border-radius:12px; padding:24px; box-shadow:0 6px 20px rgba(0,0,0,0.08); text-align:center;}
+    h2{margin:0 0 14px 0}
+    input{width:92%; padding:11px; margin:8px 0; border-radius:6px; border:1px solid #cfd8e3; font-size:15px}
+    button{width:94%; padding:12px; margin-top:10px; border-radius:6px; border:none; background:#007bff; color:#fff; font-weight:600; cursor:pointer}
+    #result{margin-top:14px; text-align:left; padding:12px; border-radius:6px}
+    .ok{background:#e9f7ef; color:#125a2b}
+    .err{background:#fdecea; color:#721c24}
 
-  @media(max-width:520px){
-    .top{flex-direction:column;align-items:center}
-    .title{text-align:center}
-    .footer-fixed{left:0;right:0;text-align:center;}
-  }
+    .row{display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #eee}
+    .label{font-weight:600; color:#333}
+    .val{color:#111}
+    small.note{display:block; margin-top:8px; color:#555; font-size:13px}
 
-  .loader{width:14px;height:14px;border-radius:50%;border:3px solid rgba(255,255,255,0.18);border-top-color:var(--accent);animation:spin 1s linear infinite;margin-right:8px}
-  @keyframes spin{to{transform:rotate(360deg)}}
-</style>
+    .footer{margin-top:20px; text-align:center; color:#333; font-size:14px;}
+  </style>
 </head>
 <body>
 
-  <div class="wrap" role="main" aria-live="polite">
-    <div class="top">
-      <div class="logo">
-        <img src="AIT.jpg" alt="AIT Logo">
-      </div>
-      <div class="title">
-        <h1>🔧 Website Under Maintenance</h1>
-        <p class="lead">Portal ko update kiya ja raha hai.<br>Maintenance window: <b>21 Nov 2025 — 22 Nov 2025</b>.</p>
-      </div>
-    </div>
+  <div class="card">
+    <h2>Refund Status Check</h2>
 
-    <div class="card" id="card">
-      <div style="display:flex;align-items:center;justify-content:center">
-        <div class="loader"></div>
-      </div>
+    <input id="code" placeholder="Learner Code डालें" />
+    <input id="name" placeholder="Student Name डालें" />
+    <button id="check">Check Status</button>
 
-      <div style="text-align:center;margin-top:8px">
-        <strong>Maintenance ends in</strong>
-      </div>
+    <div id="result"></div>
 
-      <div class="timer" id="timer">
-        <div class="timebox"><div class="num" id="days">--</div><div class="lbl">Days</div></div>
-        <div class="timebox"><div class="num" id="hours">--</div><div class="lbl">Hours</div></div>
-        <div class="timebox"><div class="num" id="minutes">--</div><div class="lbl">Minutes</div></div>
-        <div class="timebox"><div class="num" id="seconds">--</div><div class="lbl">Seconds</div></div>
-      </div>
-
-      <div class="note" id="statusNote">Please wait — checking schedule...</div>
-    </div>
+    <small class="note">Enter exact Learner Code and Student Name.</small>
   </div>
 
-  <!-- FIXED FOOTER BOTTOM RIGHT -->
-  <div class="footer-fixed">
-    📞 Helpline: <b>7070838282</b><br>
-    Developed by <b>AIT DIGITAL SEVA KENDRA</b>
+  <script>
+    async function loadData(){
+      try {
+        const res = await fetch('results.json');
+        return await res.json();
+      } catch (e) {
+        console.error(e);
+        return [];
+      }
+    }
+
+    function showMessage(html, cls='ok'){
+      const r = document.getElementById('result');
+      r.className = cls;
+      r.innerHTML = html;
+    }
+
+    (async ()=>{
+      const data = await loadData();
+
+      document.getElementById('check').addEventListener('click', ()=>{
+
+        const code = (document.getElementById('code').value||'').trim();
+        const name = (document.getElementById('name').value||'').trim().toUpperCase();
+
+        if(!code || !name){
+          showMessage('<div class="err">कृपया दोनों फील्ड भरें।</div>', 'err');
+          return;
+        }
+
+        const found = data.find(d => 
+          String(d.learner_code).trim() === String(code).trim() &&
+          String(d.name).trim().toUpperCase() === name
+        );
+
+        if(!found){
+          showMessage('<div class="err">Record Not Found!</div>', 'err');
+          return;
+        }
+
+        const html = `
+          <div style="padding:6px 0">
+            <div class="row"><div class="label">Learner</div><div class="val">${found.name}</div></div>
+            <div class="row"><div class="label">Invoice</div><div class="val">${found.invoice}</div></div>
+            <div class="row"><div class="label">Amount</div><div class="val">₹${found.amount}</div></div>
+
+            <div style="margin-top:10px; font-weight:700; color:#0b6623">
+              Amount successfully refunded to your bank account
+            </div>
+
+            <div style="margin-top:12px; padding-top:10px; border-top:1px solid #eee">
+              <div class="row"><div class="label">Center Name</div><div class="val">${found.center_name}</div></div>
+              <div class="row"><div class="label">Center Code</div><div class="val">${found.center_code}</div></div>
+              <div class="row"><div class="label">Center Manager</div><div class="val">${found.center_manager}</div></div>
+              <div class="row"><div class="label">Contact Number</div><div class="val">${found.center_contact}</div></div>
+            </div>
+
+            <div style="margin-top:8px; font-size:12px; color:#555">
+              Advice Date: ${found.advice_date}
+            </div>
+          </div>
+        `;
+        showMessage(html, 'ok');
+      });
+    })();
+  </script>
+
+  <!-- FOOTER -->
+  <div class="footer">
+      📞 <b>Helpline:</b> 7033151758 <br>
+      Developed by <b>Ektab Alam</b>
   </div>
-
-<script>
-  const endIso = '2025-11-22T23:59:59+05:30';
-  const startIso = '2025-11-21T00:00:00+05:30';
-
-  const endDate = new Date(endIso);
-  const startDate = new Date(startIso);
-
-  const daysEl = document.getElementById('days');
-  const hoursEl = document.getElementById('hours');
-  const minEl = document.getElementById('minutes');
-  const secEl = document.getElementById('seconds');
-  const statusNote = document.getElementById('statusNote');
-
-  function updateTimer(){
-    const now = new Date();
-
-    if (now < startDate){
-      statusNote.textContent = 'Maintenance scheduled to start on 21 Nov 2025.';
-      showDiff(startDate - now);
-      return;
-    }
-    if (now >= startDate && now <= endDate){
-      statusNote.textContent = 'Site is under maintenance.';
-      showDiff(endDate - now);
-      return;
-    }
-    statusNote.textContent = 'Maintenance complete — site is online.';
-  }
-
-  function showDiff(ms){
-    if (ms < 0) ms = 0;
-    const sec = Math.floor(ms/1000)%60;
-    const min = Math.floor(ms/1000/60)%60;
-    const hrs = Math.floor(ms/1000/60/60)%24;
-    const days = Math.floor(ms/1000/60/60/24);
-
-    daysEl.textContent = String(days).padStart(2,'0');
-    hoursEl.textContent = String(hrs).padStart(2,'0');
-    minEl.textContent = String(min).padStart(2,'0');
-    secEl.textContent = String(sec).padStart(2,'0');
-  }
-
-  updateTimer();
-  setInterval(updateTimer,1000);
-</script>
 
 </body>
 </html>
