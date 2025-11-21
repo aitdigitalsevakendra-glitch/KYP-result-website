@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Website Under Maintenance</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0d6efd, #6610f2);
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.15);
+        padding: 35px;
+        border-radius: 20px;
+        width: 90%;
+        max-width: 420px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        animation: fadeIn 1.5s ease-out;
+    }
+
+    .loader {
+        border: 6px solid rgba(255,255,255,0.4);
+        border-top: 6px solid #ffdf00;
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        margin: 10px auto 20px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        100% { transform: rotate(360deg); }
+    }
+
+    h2 {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .footer {
+        margin-top: 18px;
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+</head>
+<body>
+
+<div class="card">
+    <div class="loader"></div>
+
+    <h2>🔧 Website Under Maintenance</h2>
+
+    <p>We are currently updating the portal.<br>
+       Please check back in a short while.</p>
+
+    <div class="footer">
+        📞 Helpline: <b>7070838282</b><br>
+        Developed by <b>AIT DIGITAL SEVA KENDRA</b>
+    </div>
+</div>
+
+</body>
+</html>
