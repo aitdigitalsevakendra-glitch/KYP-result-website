@@ -9,30 +9,10 @@
   <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
 
   <style>
-    /* Reset */
     *{box-sizing:border-box}
     html,body{height:100%; margin:0; font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background:linear-gradient(180deg,#f4f6f9,#eef2f6); overflow-x:hidden}
-
-    /* Full-screen 3D canvas behind content */
-    #bg3d {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none; /* allow clicks through */
-      opacity: 0.85;
-    }
-
-    /* Center card */
-    .card {
-      position: relative;
-      z-index: 5;
-      width: 420px;
-      margin: 7vh auto;
-      background: #fff;
-      padding: 26px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(12,20,40,0.08);
-    }
+    #bg3d { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.85; }
+    .card { position: relative; z-index: 5; width: 420px; margin: 7vh auto; background: #fff; padding: 26px; border-radius: 12px; box-shadow: 0 10px 30px rgba(12,20,40,0.08); }
     h1 { text-align:center; margin:0 0 14px; font-size:22px; }
     input{width:100%; padding:10px 12px; margin:8px 0; border-radius:8px; border:1px solid #e6eef6; font-size:14px}
     button{width:100%; padding:10px; border-radius:8px; background:#0b79ff; color:#fff; border:0; font-weight:700; font-size:15px}
@@ -42,37 +22,14 @@
     .label{font-weight:600; color:#333}
     .val{color:#444}
     .small{font-size:13px; color:#666; text-align:center; margin-top:10px}
-
-    /* Footer bottom-right fixed */
-    .footer-right{
-      position: fixed;
-      bottom: 12px;
-      right: 18px;
-      font-size:14px;
-      color:#222;
-      z-index: 10;
-      text-align:right;
-      line-height:18px;
-      background: rgba(255,255,255,0.85);
-      padding:8px 10px;
-      border-radius:8px;
-      box-shadow: 0 6px 18px rgba(12,20,40,0.06);
-      backdrop-filter: blur(4px);
-    }
-
-    /* Responsive smaller screens */
-    @media (max-width:520px){
-      .card{width:92%; margin-top:6vh; padding:18px}
-      .footer-right{right:10px; left:10px; text-align:center}
-    }
+    .footer-right{ position: fixed; bottom: 12px; right: 18px; font-size:14px; color:#222; z-index: 10; text-align:right; line-height:18px; background: rgba(255,255,255,0.85); padding:8px 10px; border-radius:8px; box-shadow: 0 6px 18px rgba(12,20,40,0.06); backdrop-filter: blur(4px); }
+    @media (max-width:520px){ .card{width:92%; margin-top:6vh; padding:18px} .footer-right{right:10px; left:10px; text-align:center} }
   </style>
 </head>
 <body>
 
-  <!-- 3D background canvas -->
   <canvas id="bg3d"></canvas>
 
-  <!-- Main card -->
   <div class="card" role="main" aria-labelledby="title">
     <h1 id="title">Refund Status Check</h1>
 
@@ -85,131 +42,55 @@
     <div class="small">Enter exact Learner Code and Student Name.</div>
   </div>
 
-  <!-- Footer bottom-right -->
   <div class="footer-right" aria-hidden="false">
     ☎ Helpline: 7070838282<br>
     Developed by <strong>AIT DIGITAL SEVA KENDRA</strong>
   </div>
 
   <script>
-    /*************************************************************************
-     * 3D BACKGROUND - simple stylized computer (monitor + base + keyboard)
-     * Using Three.js primitives. Subtle rotation and bob animation.
-     *************************************************************************/
     (function init3D(){
       const canvas = document.getElementById('bg3d');
       const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-      renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+      renderer.setPixelRatio(window.devicePixelRatio || 1);
       renderer.setSize(window.innerWidth, window.innerHeight);
-
       const scene = new THREE.Scene();
-
-      // camera
       const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.set(0, 1.8, 6);
+      const ambient = new THREE.AmbientLight(0xffffff, 0.8); scene.add(ambient);
+      const dir = new THREE.DirectionalLight(0xffffff, 0.6); dir.position.set(5, 10, 7); scene.add(dir);
 
-      // lights
-      const ambient = new THREE.AmbientLight(0xffffff, 0.8);
-      scene.add(ambient);
-      const dir = new THREE.DirectionalLight(0xffffff, 0.6);
-      dir.position.set(5, 10, 7);
-      scene.add(dir);
-
-      // group for computer
       const comp = new THREE.Group();
-
-      // monitor (thin box)
       const monitorGeom = new THREE.BoxGeometry(3.4, 2.2, 0.12);
-      const monitorMat = new THREE.MeshStandardMaterial({
-        color: 0x111827, metalness: 0.2, roughness: 0.45
-      });
-      const monitor = new THREE.Mesh(monitorGeom, monitorMat);
-      monitor.position.set(0, 1.0, 0);
-      // screen inner (slightly inset)
+      const monitorMat = new THREE.MeshStandardMaterial({ color: 0x111827, metalness: 0.2, roughness: 0.45 });
+      const monitor = new THREE.Mesh(monitorGeom, monitorMat); monitor.position.set(0, 1.0, 0);
       const screenGeom = new THREE.PlaneGeometry(3.0, 1.75);
-      const screenMat = new THREE.MeshBasicMaterial({ color: 0x0a84ff }); // bluish screen
-      const screen = new THREE.Mesh(screenGeom, screenMat);
-      screen.position.set(0, 1.0, 0.065);
+      const screenMat = new THREE.MeshBasicMaterial({ color: 0x0a84ff });
+      const screen = new THREE.Mesh(screenGeom, screenMat); screen.position.set(0, 1.0, 0.065);
       comp.add(monitor, screen);
-
-      // stand
       const standGeom = new THREE.BoxGeometry(0.25, 0.5, 0.25);
       const standMat = new THREE.MeshStandardMaterial({ color: 0x222831, metalness: 0.1, roughness: 0.6 });
-      const stand = new THREE.Mesh(standGeom, standMat);
-      stand.position.set(0, 0.5, 0);
-      comp.add(stand);
-
-      // base/keyboard (flat box)
+      const stand = new THREE.Mesh(standGeom, standMat); stand.position.set(0, 0.5, 0); comp.add(stand);
       const baseGeom = new THREE.BoxGeometry(3.2, 0.12, 1.6);
       const baseMat = new THREE.MeshStandardMaterial({ color: 0x1f2a44, metalness: 0.05, roughness: 0.7 });
-      const base = new THREE.Mesh(baseGeom, baseMat);
-      base.position.set(0, 0.12, 0.2);
-      comp.add(base);
-
-      // subtle keys (texture-like)
+      const base = new THREE.Mesh(baseGeom, baseMat); base.position.set(0, 0.12, 0.2); comp.add(base);
       const keyGeom = new THREE.PlaneGeometry(2.8, 0.8, 40, 20);
       const keyMat = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: false, opacity: 0.04, transparent: true });
-      const keys = new THREE.Mesh(keyGeom, keyMat);
-      keys.rotation.x = -Math.PI / 2;
-      keys.position.set(0, 0.18, 0.2);
-      comp.add(keys);
-
-      // add a soft glow plane behind monitor
+      const keys = new THREE.Mesh(keyGeom, keyMat); keys.rotation.x = -Math.PI / 2; keys.position.set(0, 0.18, 0.2); comp.add(keys);
       const glowGeom = new THREE.PlaneGeometry(6, 3);
       const glowMat = new THREE.MeshBasicMaterial({ color: 0x0a84ff, opacity: 0.035, transparent: true });
-      const glow = new THREE.Mesh(glowGeom, glowMat);
-      glow.position.set(0, 1.0, -1.2);
-      comp.add(glow);
-
+      const glow = new THREE.Mesh(glowGeom, glowMat); glow.position.set(0, 1.0, -1.2); comp.add(glow);
       scene.add(comp);
-
-      // position group lower-left so card is readable
       comp.position.set(-0.8, -0.6, 0);
-
-      // subtle floor (shadow)
-      const floorGeom = new THREE.PlaneGeometry(20, 20);
-      const floorMat = new THREE.MeshStandardMaterial({ color: 0xf2f4f9, roughness: 1, metalness: 0 });
-      const floor = new THREE.Mesh(floorGeom, floorMat);
-      floor.rotation.x = -Math.PI/2;
-      floor.position.y = -0.5;
-      floor.visible = false; // keep invisible; used for light bounce if needed
-      scene.add(floor);
-
-      // animation loop
       let t = 0;
-      function animate(){
-        t += 0.01;
-        // slow rotation and bob
-        comp.rotation.y = Math.sin(t * 0.5) * 0.12;
-        comp.position.y = -0.6 + Math.sin(t * 0.8) * 0.03;
-        comp.rotation.x = Math.sin(t * 0.2) * 0.03;
-
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
+      function animate(){ t += 0.01; comp.rotation.y = Math.sin(t * 0.5) * 0.12; comp.position.y = -0.6 + Math.sin(t * 0.8) * 0.03; comp.rotation.x = Math.sin(t * 0.2) * 0.03; renderer.render(scene, camera); requestAnimationFrame(animate); }
       animate();
-
-      // handle resize
-      window.addEventListener('resize', ()=>{
-        const w = window.innerWidth, h = window.innerHeight;
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        renderer.setSize(w, h);
-      });
-
-      // subtle CSS blur + scale for background
-      canvas.style.filter = 'blur(0px) saturate(110%)';
-      canvas.style.transform = 'scale(1.05)';
+      window.addEventListener('resize', ()=>{ const w = window.innerWidth, h = window.innerHeight; camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h); });
+      canvas.style.filter = 'blur(0px) saturate(110%)'; canvas.style.transform = 'scale(1.05)';
     })();
 
-    /*************************************************************************
-     * DATA + UI LOGIC
-     * Uses the uploaded JSON file path you provided earlier.
-     *************************************************************************/
     (function app(){
-      // NOTE: This uses the uploaded file path you provided earlier.
-      // Platform will transform the local path to a usable URL.
-      const DATA_URL = '/mnt/data/results.json';
+      // IMPORTANT: use the filename that is actually in your GitHub repo
+      const DATA_URL = 'results_with_center_final.json';
 
       async function loadData(){
         try {
@@ -217,9 +98,7 @@
           if(!res.ok) throw new Error('Fetch failed ' + res.status);
           const raw = await res.json();
 
-          // Normalize rows: handle CSV->JSON 'Unnamed' keys or friendly keys
           const mapped = raw.map(d => {
-            // if CSV-export like structure (unnamed columns)
             if (d['Unnamed: 1'] || d['Unnamed: 2']) {
               return {
                 learner_code: String(d['Unnamed: 1'] || '').trim(),
@@ -233,8 +112,6 @@
                 center_contact: d['Contact Number'] || d['Contact'] || ''
               };
             }
-
-            // fallback: try common field names
             return {
               learner_code: String(d.learner_code || d['Learner Code'] || d['Learner'] || '').trim(),
               name: String(d.name || d.Name || d['Student Name'] || '').trim().toUpperCase(),
@@ -263,9 +140,8 @@
 
       (async ()=>{
         const data = await loadData();
-
         if(!data || data.length === 0){
-          showMessage('No data loaded. कृपया सुनिश्चित करें कि JSON फाइल सही पाथ पर है।', 'err');
+          showMessage('No data loaded.।', 'err');
         }
 
         document.getElementById('check').addEventListener('click', ()=>{
@@ -277,7 +153,6 @@
             return;
           }
 
-          // find exact match on code and name (case-insensitive for name)
           const found = data.find(d =>
             String(d.learner_code || '').trim() === String(code).trim() &&
             String(d.name || '').trim().toUpperCase() === name
@@ -294,18 +169,13 @@
               <div class="row"><div class="label">Learner</div><div class="val">${found.name}</div></div>
               <div class="row"><div class="label">Invoice</div><div class="val">${found.invoice || '—'}</div></div>
               <div class="row"><div class="label">Amount</div><div class="val">₹${found.amount || '0'}</div></div>
-
-              <div style="margin-top:10px; font-weight:700; color:#0b6623;">
-                Amount successfully refunded to your bank account
-              </div>
-
+              <div style="margin-top:10px; font-weight:700; color:#0b6623;">Amount successfully refunded to your bank account</div>
               <div style="margin-top:12px; padding-top:10px; border-top:1px solid #eee">
                 <div class="row"><div class="label">Center Name</div><div class="val">${found.center_name || '—'}</div></div>
                 <div class="row"><div class="label">Center Code</div><div class="val">${found.center_code || '—'}</div></div>
                 <div class="row"><div class="label">Center Manager</div><div class="val">${found.center_manager || '—'}</div></div>
                 <div class="row"><div class="label">Contact</div><div class="val">${found.center_contact || '—'}</div></div>
               </div>
-
               <div style="margin-top:8px; font-size:12px; color:#555">Advice Date: ${found.advice_date || '—'}</div>
             </div>
           `;
