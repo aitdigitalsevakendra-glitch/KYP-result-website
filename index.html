@@ -7,55 +7,80 @@
 
 <style>
     body {
-        font-family: Arial, sans-serif;
-        background: #f2f4f8;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0d6efd, #6610f2);
         height: 100vh;
         margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         text-align: center;
+        color: white;
     }
-    .box {
-        background: white;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+    .card {
+        background: rgba(255,255,255,0.15);
+        padding: 35px;
+        border-radius: 20px;
         width: 90%;
-        max-width: 400px;
+        max-width: 420px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        animation: fadeIn 1.5s ease-out;
     }
-    h2 {
-        color: #ff9900;
-        margin-bottom: 10px;
-    }
-    p {
-        color: #333;
-        font-size: 16px;
-    }
+
     .loader {
-        border: 5px solid #ddd;
-        border-top: 5px solid #ff9900;
+        border: 6px solid rgba(255,255,255,0.4);
+        border-top: 6px solid #ffdf00;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
+        width: 55px;
+        height: 55px;
+        margin: 10px auto 20px;
         animation: spin 1s linear infinite;
-        margin: 15px auto;
     }
+
     @keyframes spin {
         100% { transform: rotate(360deg); }
+    }
+
+    h2 {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .footer {
+        margin-top: 18px;
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 </style>
 
 </head>
 <body>
 
-<div class="box">
+<div class="card">
     <div class="loader"></div>
-    <h2>Website Under Maintenance</h2>
-    <p>We are updating the website.<br>Please try again after some time.</p>
 
-    <small style="color:#777;">Developed by Ektab Alam</small>
+    <h2>🔧 Website Under Maintenance</h2>
+
+    <p>We are currently updating the portal.<br>
+       Please check back in a short while.</p>
+
+    <div class="footer">
+        📞 Helpline: <b>7070838282</b><br>
+        Developed by <b>AIT DIGITAL SEVA KENDRA</b>
+    </div>
 </div>
 
 </body>
