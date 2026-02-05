@@ -1,10 +1,186 @@
 [
   {
-    "learnerCode": "3653953725022451",
-    "name": "SADAF AFREEN",
-    "batch": "2025",
+    "learnerCode": "3392135523061450",
+    "name": "AARSHI DULARI",
+    "batch": "September 2025",
+    "bs_cit": "NA",
+    "bs_css": "NA",
+    "bs_cls": "NA"
+  },
+  {
+    "learnerCode": "3744954825081950",
+    "name": "EHKAM",
+    "batch": "August 2025",
+    "bs_cit": "NA",
+    "bs_css": "NA",
+    "bs_cls": "NA"
+  },
+  {
+    "learnerCode": "3745838225081950",
+    "name": "CHHOTI DARAKSA",
+    "batch": "August 2025",
+    "bs_cit": "NA",
+    "bs_css": "PASS",
+    "bs_cls": "NA"
+  },
+  {
+    "learnerCode": "3746033325081950",
+    "name": "VIVEK KUMAR SAH",
+    "batch": "August 2025",
+    "bs_cit": "NA",
+    "bs_css": "NA",
+    "bs_cls": "NA"
+  },
+  {
+    "learnerCode": "3749631725082250",
+    "name": "MD NASAR RAZA",
+    "batch": "August 2025",
     "bs_cit": "PASS",
-    "bs_cls": "PASS",
-    "bs_css": "PASS"
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3749631825082250",
+    "name": "NADIR ALAM",
+    "batch": "August 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3751768225091850",
+    "name": "GAUSIYA BEGUM",
+    "batch": "September 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3754134425091850",
+    "name": "TAJALLI BEGAM",
+    "batch": "September 2025",
+    "bs_cit": "NA",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3754134525091850",
+    "name": "SHAYEED AFRIDI",
+    "batch": "September 2025",
+    "bs_cit": "FAIL",
+    "bs_css": "PASS",
+    "bs_cls": "FAIL"
+  },
+  {
+    "learnerCode": "3754134725091850",
+    "name": "SOFIA PERWEEN",
+    "batch": "September 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "FAIL"
+  },
+  {
+    "learnerCode": "3754134925091850",
+    "name": "MD ROUF ALAM",
+    "batch": "September 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "FAIL"
+  },
+  {
+    "learnerCode": "3754135125091850",
+    "name": "SANIYA MIRZA",
+    "batch": "September 2025",
+    "bs_cit": "ABSENT",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3754135225091850",
+    "name": "NOOR TARANA",
+    "batch": "September 2025",
+    "bs_cit": "ABSENT",
+    "bs_css": "PASS",
+    "bs_cls": "FAIL"
+  },
+  {
+    "learnerCode": "3754135325091850",
+    "name": "JINAT PERWEEN",
+    "batch": "September 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3757080025092350",
+    "name": "KAHKASHA TARNNUM",
+    "batch": "September 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3757082325092350",
+    "name": "GULSABA TARANNUM",
+    "batch": "September 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "FAIL"
+  },
+  {
+    "learnerCode": "3757796425092650",
+    "name": "MASUM ALAM",
+    "batch": "September 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "FAIL"
+  },
+  {
+    "learnerCode": "3758526725092650",
+    "name": "TAKSIR ALAM",
+    "batch": "September 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3759425925101850",
+    "name": "TARANNUM PERWEEN",
+    "batch": "October 2025",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3759750225101850",
+    "name": "AJMAT ARA",
+    "batch": "October 2025",
+    "bs_cit": "FAIL",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3759750325101850",
+    "name": "DARAKHSHAN",
+    "batch": "October 2025",
+    "bs_cit": "FAIL",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3761142525101850",
+    "name": "SHAZIA FIRDOS",
+    "batch": "October 2025",
+    "bs_cit": "FAIL",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
+  },
+  {
+    "learnerCode": "3761629325101850",
+    "name": "AHMADI KHATUN",
+    "batch": "October 2025",
+    "bs_cit": "FAIL",
+    "bs_css": "PASS",
+    "bs_cls": "PASS"
   }
 ]
