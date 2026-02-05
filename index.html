@@ -2,73 +2,100 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kushal Yuva Program - Result</title>
+<title>Kushal Yuva Program - Result Check</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+/* ===== BODY & BACKGROUND ===== */
 body{
   margin:0;
-  font-family:Arial;
+  font-family: Arial, sans-serif;
   background:#111;
   color:#000;
 }
+
+/* ===== HEADER ===== */
 header{
   text-align:center;
-  padding:20px;
+  padding:20px 10px;
 }
 .header-text{
   font-size:28px;
   font-weight:bold;
+  color:#00ff66;
+  text-shadow:0 0 10px #00ff66, 0 0 20px #ffcc00;
   animation: glow 2s infinite alternate;
 }
 @keyframes glow{
-  from{color:#ff0;text-shadow:0 0 10px red;}
-  to{color:#0ff;text-shadow:0 0 20px lime;}
+  from{opacity:0.7;}
+  to{opacity:1;}
 }
+
+/* ===== MAIN AREA ===== */
+.main{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:60vh;
+}
+
 .container{
+  width:100%;
+  max-width:420px;
   background:#fff;
-  max-width:500px;
-  margin:20px auto;
   padding:20px;
   border-radius:10px;
+  box-shadow:0 0 15px rgba(0,0,0,0.4);
 }
-input,select,button{
+
+/* ===== FORM ===== */
+input, select, button{
   width:100%;
   padding:10px;
   margin-top:10px;
+  font-size:15px;
 }
+
 button{
-  background:#007bff;
+  background:#0d6efd;
   color:#fff;
   border:none;
   cursor:pointer;
   font-size:16px;
 }
+button:hover{
+  background:#084298;
+}
+
+/* ===== RESULT ===== */
+#output{
+  margin-top:15px;
+}
 table{
   width:100%;
-  margin-top:15px;
   border-collapse:collapse;
+  margin-top:10px;
 }
-th,td{
+th, td{
   border:1px solid #ccc;
   padding:8px;
   text-align:center;
 }
-.pass{color:green;font-weight:bold;}
-.fail{color:red;font-weight:bold;}
+.pass{
+  color:green;
+  font-weight:bold;
+}
+.fail{
+  color:red;
+  font-weight:bold;
+}
 
+/* ===== FOOTER ===== */
 footer{
-  margin-top:20px;
-  padding:15px;
   background:#000;
   color:#fff;
-}
-.fire{
-  animation: fire 1s infinite alternate;
-}
-@keyframes fire{
-  from{color:orange;}
-  to{color:red;}
+  padding:15px;
+  font-size:14px;
 }
 </style>
 </head>
@@ -79,64 +106,87 @@ footer{
   <div class="header-text">🔥 KUSHAL YUVA PROGRAM 🔥</div>
 </header>
 
-<div class="container">
-  <input type="text" id="code" placeholder="Learner Code">
-  <input type="text" id="name" placeholder="Learner Name">
+<div class="main">
+  <div class="container">
 
-  <select id="batch">
-    <option value="">Select Batch</option>
-    <option value="2025">2025</option>
-    <option value="2026">2026</option>
-  </select>
+    <input type="text" id="code" placeholder="Learner PIN">
+    <input type="text" id="name" placeholder="Learner Name">
 
-  <button onclick="checkResult()">Check Result</button>
+    <select id="batch">
+      <option value="">Select Batch</option>
+      <option value="2025">2025</option>
+      <option value="2026">2026</option>
+    </select>
 
-  <div id="output"></div>
+    <button onclick="checkResult()">Check Result</button>
+
+    <div id="output"></div>
+
+  </div>
 </div>
 
 <footer>
-<p><b>Center Name:</b> Creation Welfare Society</p>
+  <p><b>Center Name:</b> Creation Welfare Society</p>
   <p><b>Address:</b> Janta Hat, Kochadhaman</p>
   <p><b>Contact:</b> 7033151758</p>
 </footer>
 
 <script>
 async function checkResult(){
-  const code=document.getElementById("code").value.trim();
-  const name=document.getElementById("name").value.trim().toUpperCase();
-  const batch=document.getElementById("batch").value;
-  const out=document.getElementById("output");
+  const code = document.getElementById("code").value.trim();
+  const name = document.getElementById("name").value.trim().toUpperCase();
+  const batch = document.getElementById("batch").value;
+  const out = document.getElementById("output");
 
-  const res=await fetch("results.json");
-  const data=await res.json();
-
-  const r=data.find(x=>
-    x.learnerCode===code &&
-    x.name.toUpperCase()===name &&
-    x.batch===batch
-  );
-
-  if(!r){
-    out.innerHTML="<p class='fail'>Record Not Found</p>";
+  if(!code || !name || !batch){
+    out.innerHTML = "<p class='fail'>Please fill all fields</p>";
     return;
   }
 
-  out.innerHTML=`
-    <p><b>Name:</b> ${r.name}</p>
-    <p><b>Learner PIN:</b> ${r.learnerCode}</p>
-    <p><b>Batch:</b> ${r.batch}</p>
+  try{
+    const res = await fetch("results.json");
+    const data = await res.json();
 
-    <table>
-      <tr><th>Course</th><th>Result</th></tr>
-      <tr><td>BS-CIT</td><td class="${r.bs_cit==='PASS'?'pass':'fail'}">${r.bs_cit}</td></tr>
-      <tr><td>BS-CLS</td><td class="${r.bs_cls==='PASS'?'pass':'fail'}">${r.bs_cls}</td></tr>
-      <tr><td>BS-CSS</td><td class="${r.bs_css==='PASS'?'pass':'fail'}">${r.bs_css}</td></tr>
-    </table>
-  `;
+    const r = data.find(x =>
+      x.learnerCode === code &&
+      x.name.toUpperCase() === name &&
+      x.batch === batch
+    );
+
+    if(!r){
+      out.innerHTML = "<p class='fail'>Record Not Found</p>";
+      return;
+    }
+
+    out.innerHTML = `
+      <p><b>Name:</b> ${r.name}</p>
+      <p><b>Learner PIN:</b> ${r.learnerCode}</p>
+      <p><b>Batch:</b> ${r.batch}</p>
+
+      <table>
+        <tr>
+          <th>Course</th>
+          <th>Result</th>
+        </tr>
+        <tr>
+          <td>BS-CIT</td>
+          <td class="${r.bs_cit==='PASS'?'pass':'fail'}">${r.bs_cit}</td>
+        </tr>
+        <tr>
+          <td>BS-CLS</td>
+          <td class="${r.bs_cls==='PASS'?'pass':'fail'}">${r.bs_cls}</td>
+        </tr>
+        <tr>
+          <td>BS-CSS</td>
+          <td class="${r.bs_css==='PASS'?'pass':'fail'}">${r.bs_css}</td>
+        </tr>
+      </table>
+    `;
+  }catch(e){
+    out.innerHTML = "<p class='fail'>Error loading result data</p>";
+  }
 }
 </script>
 
 </body>
 </html>
-
-
