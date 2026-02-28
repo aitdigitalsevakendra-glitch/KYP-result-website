@@ -1,186 +1,74 @@
 [
   {
-    "learnerCode": "3392135523061450",
-    "name": "AARSHI DULARI",
-    "batch": "September 2025",
-    "bs_cit": "NA",
-    "bs_css": "NA",
-    "bs_cls": "NA"
-  },
-  {
-    "learnerCode": "3744954825081950",
-    "name": "EHKAM",
-    "batch": "August 2025",
-    "bs_cit": "NA",
-    "bs_css": "NA",
-    "bs_cls": "NA"
-  },
-  {
-    "learnerCode": "3745838225081950",
+    "learnerCode": "",
     "name": "CHHOTI DARAKSA",
     "batch": "August 2025",
-    "bs_cit": "NA",
+    "bs_cit": "PASS",
+    "bs_cls": "PASS",
     "bs_css": "PASS",
-    "bs_cls": "NA"
+    "certificate": "certificates/3745838225081951.pdf"
   },
   {
-    "learnerCode": "3746033325081950",
-    "name": "VIVEK KUMAR SAH",
-    "batch": "August 2025",
-    "bs_cit": "NA",
-    "bs_css": "NA",
-    "bs_cls": "NA"
-  },
-  {
-    "learnerCode": "3749631725082250",
+    "learnerCode": "",
     "name": "MD NASAR RAZA",
     "batch": "August 2025",
     "bs_cit": "PASS",
+    "bs_cls": "PASS",
     "bs_css": "PASS",
-    "bs_cls": "PASS"
+    "certificate": "certificates/3749631725082251.pdf"
   },
   {
-    "learnerCode": "3749631825082250",
+    "learnerCode": "",
     "name": "NADIR ALAM",
     "batch": "August 2025",
     "bs_cit": "PASS",
+    "bs_cls": "PASS",
     "bs_css": "PASS",
-    "bs_cls": "PASS"
+    "certificate": "certificates/3749631825082251.pdf"
   },
   {
-    "learnerCode": "3751768225091850",
+    "learnerCode": "",
     "name": "GAUSIYA BEGUM",
     "batch": "September 2025",
     "bs_cit": "PASS",
+    "bs_cls": "PASS",
     "bs_css": "PASS",
-    "bs_cls": "PASS"
+    "certificate": "certificates/3751768225091851.pdf"
   },
   {
-    "learnerCode": "3754134425091850",
-    "name": "TAJALLI BEGAM",
-    "batch": "September 2025",
-    "bs_cit": "NA",
-    "bs_css": "PASS",
-    "bs_cls": "PASS"
-  },
-  {
-    "learnerCode": "3754134525091850",
-    "name": "SHAYEED AFRIDI",
-    "batch": "September 2025",
-    "bs_cit": "FAIL",
-    "bs_css": "PASS",
-    "bs_cls": "FAIL"
-  },
-  {
-    "learnerCode": "3754134725091850",
-    "name": "SOFIA PERWEEN",
-    "batch": "September 2025",
-    "bs_cit": "PASS",
-    "bs_css": "PASS",
-    "bs_cls": "FAIL"
-  },
-  {
-    "learnerCode": "3754134925091850",
-    "name": "MD ROUF ALAM",
-    "batch": "September 2025",
-    "bs_cit": "PASS",
-    "bs_css": "PASS",
-    "bs_cls": "FAIL"
-  },
-  {
-    "learnerCode": "3754135125091850",
-    "name": "SANIYA MIRZA",
-    "batch": "September 2025",
-    "bs_cit": "ABSENT",
-    "bs_css": "PASS",
-    "bs_cls": "PASS"
-  },
-  {
-    "learnerCode": "3754135225091850",
-    "name": "NOOR TARANA",
-    "batch": "September 2025",
-    "bs_cit": "ABSENT",
-    "bs_css": "PASS",
-    "bs_cls": "FAIL"
-  },
-  {
-    "learnerCode": "3754135325091850",
+    "learnerCode": "",
     "name": "JINAT PERWEEN",
     "batch": "September 2025",
     "bs_cit": "PASS",
+    "bs_cls": "PASS",
     "bs_css": "PASS",
-    "bs_cls": "PASS"
+    "certificate": "certificates/3754135325091851.pdf"
   },
   {
-    "learnerCode": "3757080025092350",
+    "learnerCode": "",
     "name": "KAHKASHA TARNNUM",
     "batch": "September 2025",
     "bs_cit": "PASS",
+    "bs_cls": "PASS",
     "bs_css": "PASS",
-    "bs_cls": "PASS"
+    "certificate": "certificates/3757080025092351.pdf"
   },
   {
-    "learnerCode": "3757082325092350",
-    "name": "GULSABA TARANNUM",
-    "batch": "September 2025",
-    "bs_cit": "PASS",
-    "bs_css": "PASS",
-    "bs_cls": "FAIL"
-  },
-  {
-    "learnerCode": "3757796425092650",
-    "name": "MASUM ALAM",
-    "batch": "September 2025",
-    "bs_cit": "PASS",
-    "bs_css": "PASS",
-    "bs_cls": "FAIL"
-  },
-  {
-    "learnerCode": "3758526725092650",
+    "learnerCode": "",
     "name": "TAKSIR ALAM",
     "batch": "September 2025",
     "bs_cit": "PASS",
+    "bs_cls": "PASS",
     "bs_css": "PASS",
-    "bs_cls": "PASS"
+    "certificate": "certificates/3758526725092651.pdf"
   },
   {
-    "learnerCode": "3759425925101850",
+    "learnerCode": "",
     "name": "TARANNUM PERWEEN",
     "batch": "October 2025",
     "bs_cit": "PASS",
+    "bs_cls": "PASS",
     "bs_css": "PASS",
-    "bs_cls": "PASS"
-  },
-  {
-    "learnerCode": "3759750225101850",
-    "name": "AJMAT ARA",
-    "batch": "October 2025",
-    "bs_cit": "FAIL",
-    "bs_css": "PASS",
-    "bs_cls": "PASS"
-  },
-  {
-    "learnerCode": "3759750325101850",
-    "name": "DARAKHSHAN",
-    "batch": "October 2025",
-    "bs_cit": "FAIL",
-    "bs_css": "PASS",
-    "bs_cls": "PASS"
-  },
-  {
-    "learnerCode": "3761142525101850",
-    "name": "SHAZIA FIRDOS",
-    "batch": "October 2025",
-    "bs_cit": "FAIL",
-    "bs_css": "PASS",
-    "bs_cls": "PASS"
-  },
-  {
-    "learnerCode": "3761629325101850",
-    "name": "AHMADI KHATUN",
-    "batch": "October 2025",
-    "bs_cit": "FAIL",
-    "bs_css": "PASS",
-    "bs_cls": "PASS"
+    "certificate": "certificates/3759425925101851.pdf"
   }
 ]
