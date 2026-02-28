@@ -6,35 +6,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ===== BODY & BACKGROUND ===== */
 body{
   margin:0;
   font-family: Arial, sans-serif;
   min-height:100vh;
-  background: radial-gradient(circle at top, #1a1a1a, #000000);
-  color:#000;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
   display:flex;
   flex-direction:column;
 }
 
-/* ===== HEADER ===== */
 header{
   text-align:center;
   padding:25px 10px;
 }
 .header-text{
-  font-size:30px;
+  font-size:28px;
   font-weight:bold;
   color:#00ff66;
   text-shadow:0 0 8px #00ff66, 0 0 18px #ffcc00;
-  animation: glow 2s infinite alternate;
-}
-@keyframes glow{
-  from{opacity:0.8;}
-  to{opacity:1;}
 }
 
-/* ===== MAIN AREA ===== */
 .main{
   flex:1;
   display:flex;
@@ -42,17 +33,15 @@ header{
   align-items:center;
 }
 
-/* ===== CARD ===== */
 .container{
   width:100%;
   max-width:420px;
-  background:#ffffff;
+  background:#fff;
   padding:22px;
   border-radius:12px;
   box-shadow:0 15px 40px rgba(0,0,0,0.7);
 }
 
-/* ===== FORM ===== */
 input, select, button{
   width:100%;
   padding:11px;
@@ -67,51 +56,35 @@ button{
   color:#fff;
   border:none;
   cursor:pointer;
-  font-size:16px;
-  font-weight:bold;
-}
-button:hover{
-  background:#084298;
-}
-
-/* ===== RESULT ===== */
-#output{
-  margin-top:15px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
-}
-th, td{
-  border:1px solid #ccc;
-  padding:8px;
-  text-align:center;
-  font-size:14px;
-}
-th{
-  background:#f1f1f1;
-}
-.pass{
-  color:green;
-  font-weight:bold;
-}
-.fail{
-  color:red;
-  font-weight:bold;
-}
-.na{
-  color:#666;
   font-weight:bold;
 }
 
-/* ===== FOOTER ===== */
-footer{
-  background:#000;
-  color:#fff;
-  padding:15px;
-  font-size:14px;
-  text-align:left;
+.pass{color:green;font-weight:bold;}
+.fail{color:red;font-weight:bold;}
+.na{color:#666;font-weight:bold;}
+
+/* Popup */
+.popup3d{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;justify-content:center;align-items:center;
+  z-index:9999;
+}
+.popup-box{
+  background:#fff;padding:30px;border-radius:15px;
+  text-align:center;width:300px;
+}
+
+/* WhatsApp */
+.whatsapp-pro{
+  position:fixed;bottom:20px;right:20px;
+  background:#25D366;color:#fff;border-radius:60px;
+  padding:14px 20px;font-weight:bold;
+  text-decoration:none;z-index:9999;display:none;
+}
+.wa-badge{
+  background:red;color:#fff;font-size:11px;
+  padding:3px 6px;border-radius:20px;margin-left:6px;
 }
 </style>
 </head>
@@ -119,95 +92,133 @@ footer{
 <body>
 
 <header>
-  <div class="header-text">🔥 KUSHAL YUVA PROGRAM 🔥</div>
+<div class="header-text">🔥 KUSHAL YUVA PROGRAM 🔥</div>
 </header>
 
 <div class="main">
-  <div class="container">
+<div class="container">
 
-    <input type="text" id="code" placeholder="Learner Code">
-    <input type="text" id="name" placeholder="Learner Name">
+<input type="text" id="code" placeholder="Learner Code (optional)">
+<input type="text" id="name" placeholder="Learner Name">
+<select id="batch">
+<option value="">Select Batch</option>
+<option>August 2025</option>
+<option>September 2025</option>
+<option>October 2025</option>
+</select>
 
-    <select id="batch">
-      <option value="">Select Batch</option>
-      <option value="August 2025">August 2025</option>
-      <option value="September 2025">September 2025</option>
-      <option value="October 2025">October 2025</option>
-    </select>
+<button onclick="checkResult()">Check Result</button>
+<div id="output"></div>
 
-    <button onclick="checkResult()">Check Result</button>
+</div>
+</div>
 
-    <div id="output"></div>
-
+<!-- Popup -->
+<div id="popup3d" class="popup3d">
+  <div class="popup-box">
+    <h3>✅ Result Found</h3>
+    <button onclick="closePopup()">OK</button>
   </div>
 </div>
 
-<footer>
-  <p><b>Center Name:</b> Creation Welfare Society</p>
-  <p><b>Address:</b> Janta Hat, Kochadhaman</p>
-  <p><b>Contact:</b> 7033151758</p>
-</footer>
+<!-- Certificate Viewer -->
+<div id="certModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;justify-content:center;align-items:center;">
+  <div style="position:relative;width:90%;height:90%;background:#fff;">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-25deg);font-size:48px;color:red;opacity:0.25;font-weight:bold;pointer-events:none;">
+      SOFT COPY – NOT ORIGINAL
+    </div>
+    <iframe id="certFrame" style="width:100%;height:100%;border:none;"></iframe>
+    <button onclick="closeCert()" style="position:absolute;top:10px;right:10px;background:red;color:#fff;border:none;padding:8px 12px;">✖</button>
+  </div>
+</div>
+
+<!-- WhatsApp -->
+<a id="waSupport" class="whatsapp-pro" target="_blank">
+💬 Support <span class="wa-badge">LIVE</span>
+</a>
 
 <script>
 async function checkResult(){
-  const code = document.getElementById("code").value.trim();
-  const name = document.getElementById("name").value.trim().toUpperCase();
-  const batch = document.getElementById("batch").value;
-  const out = document.getElementById("output");
+  const code=document.getElementById("code").value.trim();
+  const name=document.getElementById("name").value.trim().toUpperCase();
+  const batch=document.getElementById("batch").value;
+  const out=document.getElementById("output");
 
-  if(!code || !name || !batch){
-    out.innerHTML = "<p class='fail'>Please fill all fields</p>";
+  if(!name||!batch){
+    out.innerHTML="<p class='fail'>Please fill required fields</p>";
     return;
   }
 
-  try{
-    const res = await fetch("results.json");
-    const data = await res.json();
+  const res=await fetch("results.json");
+  const data=await res.json();
 
-    const r = data.find(x =>
-      x.learnerCode === code &&
-      x.name.toUpperCase() === name &&
-      x.batch === batch
-    );
+  const matches=data.filter(x=>x.name.toUpperCase()===name&&x.batch===batch);
 
-    if(!r){
-      out.innerHTML = "<p class='fail'>Record Not Found</p>";
-      return;
-    }
-
-    function cls(v){
-      if(v === "PASS") return "pass";
-      if(v === "FAIL" || v === "ABSENT") return "fail";
-      return "na";
-    }
-
-    out.innerHTML = `
-      <p><b>Name:</b> ${r.name}</p>
-      <p><b>Learner Code:</b> ${r.learnerCode}</p>
-      <p><b>Batch:</b> ${r.batch}</p>
-
-      <table>
-        <tr>
-          <th>Course</th>
-          <th>Result</th>
-        </tr>
-        <tr>
-          <td>BS-CIT</td>
-          <td class="${cls(r.bs_cit)}">${r.bs_cit}</td>
-        </tr>
-        <tr>
-          <td>BS-CLS</td>
-          <td class="${cls(r.bs_cls)}">${r.bs_cls}</td>
-        </tr>
-        <tr>
-          <td>BS-CSS</td>
-          <td class="${cls(r.bs_css)}">${r.bs_css}</td>
-        </tr>
-      </table>
-    `;
-  }catch(e){
-    out.innerHTML = "<p class='fail'>Error loading result data</p>";
+  if(matches.length===0){
+    out.innerHTML="<p class='fail'>Record Not Found</p>";
+    return;
   }
+
+  if(matches.length>1&&!code){
+    out.innerHTML="<p class='fail'>Enter learner code</p>";
+    return;
+  }
+
+  const r=matches.length===1?matches[0]:matches.find(x=>x.learnerCode===code);
+  if(!r){out.innerHTML="<p class='fail'>Incorrect learner code</p>";return;}
+
+  showPopup();
+
+  const isEligible=r.bs_cit==="PASS"&&r.bs_cls==="PASS"&&r.bs_css==="PASS";
+
+  activateWhatsApp(r.name,r.batch,isEligible);
+
+  function cls(v){
+    if(v==="PASS")return"pass";
+    if(v==="FAIL"||v==="ABSENT")return"fail";
+    return"na";
+  }
+
+  let certButtons="";
+  if(isEligible&&r.certificate){
+    certButtons=`
+    <a href="#" onclick="openCert('${r.certificate}')"><button>📄 View Soft Copy</button></a>
+    <a href="${r.certificate}" download><button style="background:green;margin-top:8px;">⬇️ Download Soft Copy</button></a>`;
+  }else{
+    certButtons=`<p class="fail">❌ Certificate not issued</p>`;
+  }
+
+  const overall=isEligible?'<span class="pass">🏆 OVERALL PASS</span>':'<span class="fail">❌ OVERALL FAIL</span>';
+
+  out.innerHTML=`
+  <p><b>Name:</b> ${r.name}</p>
+  <p><b>Batch:</b> ${r.batch}</p>
+  <p>${overall}</p>
+  <table width="100%" border="1" cellspacing="0" cellpadding="6">
+  <tr><th>Course</th><th>Result</th></tr>
+  <tr><td>BS-CIT</td><td class="${cls(r.bs_cit)}">${r.bs_cit}</td></tr>
+  <tr><td>BS-CLS</td><td class="${cls(r.bs_cls)}">${r.bs_cls}</td></tr>
+  <tr><td>BS-CSS</td><td class="${cls(r.bs_css)}">${r.bs_css}</td></tr>
+  </table>
+  <p style="color:#d63384;font-weight:bold;">
+  ⚠️ This is a soft copy. Original certificate will be issued by the center only.
+  </p>
+  ${certButtons}`;
+}
+
+function showPopup(){document.getElementById("popup3d").style.display="flex";}
+function closePopup(){document.getElementById("popup3d").style.display="none";}
+function openCert(p){document.getElementById("certFrame").src=p;document.getElementById("certModal").style.display="flex";}
+function closeCert(){document.getElementById("certModal").style.display="none";}
+
+function activateWhatsApp(name,batch,isPass){
+  let msg=isPass?
+  `Hello KYP Support,%0AStudent: ${name}%0ABatch: ${batch}%0AMujhe certificate help chahiye.`:
+  `Hello KYP Support,%0AStudent: ${name}%0ABatch: ${batch}%0AMujhe fail/improvement help chahiye.`;
+
+  const btn=document.getElementById("waSupport");
+  btn.href="https://wa.me/917033151758?text="+encodeURIComponent(msg);
+  btn.style.display="block";
 }
 </script>
 
