@@ -1,160 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>KYP Super Admin</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KYP Result Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body{
-  font-family: Arial;
-  background:#0f172a;
   margin:0;
-  padding:20px;
-  color:white;
+  font-family: Arial;
+  min-height:100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)),
+    url('bg1.jpg') center/contain no-repeat,
+    url('bg2.jpg') center/contain no-repeat,
+    #9c1c5a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
-.container{
-  max-width:900px;
-  margin:auto;
-}
-
-.card{
-  background:#111827;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
+.form-box{
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:14px;
+  width:320px;
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
 }
 
 input,select,button{
   width:100%;
   padding:12px;
   margin-top:10px;
-  border-radius:8px;
-  border:none;
-  font-size:15px;
 }
 
 button{
   background:#2563eb;
   color:white;
+  border:none;
   font-weight:bold;
   cursor:pointer;
 }
-
-button:hover{
-  background:#1d4ed8;
-}
-
-.student{
-  background:#1f2937;
-  padding:12px;
-  border-radius:8px;
-  margin-top:10px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.delete{
-  background:red;
-  width:auto;
-  padding:6px 12px;
+.top-btn{
+  position:fixed;
+  top:15px;
+  right:15px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<button class="top-btn" onclick="location.href='admin-login.html'">
+🔐 Admin Login
+</button>
 
-<h2>🔥 KYP SUPER ADMIN PANEL</h2>
+<div class="form-box">
+<h3 align="center">🔥 KYP RESULT</h3>
 
-<div class="card">
-<h3>Add Student</h3>
+<input id="code" placeholder="Learner Code *" required>
+<input id="name" placeholder="Learner Name">
 
-<input id="code" placeholder="Learner Code">
-<input id="name" placeholder="Student Name">
-<input id="batch" placeholder="Batch">
-<select id="result">
-<option value="PASS">PASS</option>
-<option value="FAIL">FAIL</option>
+<select id="batch">
+<option value="">Select Batch</option>
+<option>GGR</option>
+<option>GJ</option>
 </select>
 
-<button onclick="addStudent()">Add Student</button>
+<button onclick="checkResult()">Check Result</button>
+
+<div id="result"></div>
 </div>
 
-<div class="card">
-<h3>All Students</h3>
-<div id="list"></div>
-</div>
+<script>
+async function checkResult(){
+  const code=document.getElementById("code").value;
 
-</div>
+  const res=await fetch("results.json");
+  const data=await res.json();
 
-<!-- 🔥 FIREBASE -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  const student=data.find(s=>s.code===code);
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBtRcPSgV49ybyLcH1P9Ar5GJoUEOdhNvQ",
-  authDomain: "kyp-result-portal.firebaseapp.com",
-  projectId: "kyp-result-portal",
-  storageBucket: "kyp-result-portal.firebasestorage.app",
-  messagingSenderId: "454908710797",
-  appId: "1:454908710797:web:4ddac5514e53f15819f7c4",
-  measurementId: "G-L94BZ8H6MV"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.addStudent = async function(){
-
-  const code = document.getElementById("code").value;
-  const name = document.getElementById("name").value;
-  const batch = document.getElementById("batch").value;
-  const result = document.getElementById("result").value;
-
-  if(!code || !name) return alert("Fill all fields");
-
-  await addDoc(collection(db,"students"),{
-    code,name,batch,result
-  });
-
-  alert("✅ Student Added");
-  loadStudents();
+  if(student){
+    document.getElementById("result").innerHTML=
+      "✅ Result: "+student.result;
+  }else{
+    document.getElementById("result").innerHTML=
+      "❌ Not Found";
+  }
 }
+</script>
 
-async function loadStudents(){
-  const list = document.getElementById("list");
-  list.innerHTML="Loading...";
-
-  const snap = await getDocs(collection(db,"students"));
-
-  list.innerHTML="";
-
-  snap.forEach(d=>{
-    const s = d.data();
-
-    list.innerHTML += `
-      <div class="student">
-        <div>
-          <b>${s.name}</b><br>
-          Code: ${s.code} | ${s.result}
-        </div>
-        <button class="delete" onclick="del('${d.id}')">Delete</button>
-      </div>
-    `;
-  });
-}
-
-window.del = async function(id){
-  await deleteDoc(doc(db,"students",id));
-  loadStudents();
-}
-
-loadStudents();
+<!-- Tawk.to Live Chat -->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69a3d02f9825341c3747c299/1jijuafa7';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
 </script>
 
 </body>
