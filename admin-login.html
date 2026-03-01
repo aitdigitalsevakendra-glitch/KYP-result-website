@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Login</title>
+</head>
+<body style="background:#08142c;color:white;text-align:center;padding-top:100px;">
+
+<h2>🔐 Admin Login</h2>
+
+<input id="email" placeholder="Email"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+
+<button onclick="adminLogin()">Login</button>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -24,25 +38,20 @@ window.adminLogin = async function () {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const uid = userCredential.user.uid;
 
-    // ✅ UID se admin check
-    const docRef = doc(db, "admins", uid);
-    const docSnap = await getDoc(docRef);
+    const docSnap = await getDoc(doc(db, "admins", uid));
 
     if (!docSnap.exists()) {
       alert("Admin record not found");
       return;
     }
 
-    const data = docSnap.data();
+    window.location.href = "admin.html";
 
-    if (data.role === "superadmin" || data.role === "admin") {
-      window.location.href = "admin.html";
-    } else {
-      alert("Not authorized");
-    }
-
-  } catch (error) {
-    alert("Login Failed: " + error.message);
+  } catch (err) {
+    alert("Login Failed: " + err.message);
   }
 };
 </script>
+
+</body>
+</html>
