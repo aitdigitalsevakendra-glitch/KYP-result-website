@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>KYP Login</title>
+<script type="module">
+
+// ✅ Firebase import
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ✅ Your config
+const firebaseConfig = {
+apiKey: "AIzaSyBtRcPSgV49ybyLcH1P9Ar5GJoUEOdhNvQ",
+authDomain: "kyp-result-portal.firebaseapp.com",
+projectId: "kyp-result-portal",
+storageBucket: "kyp-result-portal.firebasestorage.app",
+messagingSenderId: "454908710797",
+appId: "1:454908710797:web:4ddac5514e53f15819f7c4",
+measurementId: "G-L94BZ8H6MV"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// 🔥 LOGIN FUNCTION
+window.loginUser = async function () {
+const email = document.getElementById("email").value;
+const pass = document.getElementById("password").value;
+
+try {
+const userCred = await signInWithEmailAndPassword(auth, email, pass);
+const uid = userCred.user.uid;
+
+```
+// ✅ Check ADMIN
+let ref = doc(db, "admins", uid);
+let snap = await getDoc(ref);
+
+if (snap.exists()) {
+  window.location.href = "admin.html";
+  return;
+}
+
+// ✅ Check ASSISTANT
+ref = doc(db, "assistants", uid);
+snap = await getDoc(ref);
+
+if (snap.exists()) {
+  window.location.href = "assistant.html";
+  return;
+}
+
+// ✅ Check STUDENT
+ref = doc(db, "students", uid);
+snap = await getDoc(ref);
+
+if (snap.exists()) {
+  window.location.href = "student.html";
+  return;
+}
+
+alert("Role not assigned!");
+```
+
+} catch (e) {
+alert("Login Failed: " + e.message);
+}
+}; </script>
+
+<style>
+body{
+  font-family: Arial;
+  background:#0b1a3a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+.box{
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  width:320px;
+}
+input,button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+}
+button{
+  background:#2563eb;
+  color:white;
+  border:none;
+  font-weight:bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+<h2>🔐 KYP Login</h2>
+
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="loginUser()">LOGIN</button>
+
+</div>
+
+</body>
+</html>
