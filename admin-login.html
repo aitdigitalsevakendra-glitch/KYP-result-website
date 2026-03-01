@@ -1,76 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Login</title>
+</head>
+<body style="background:#08142c;color:white;text-align:center;padding-top:100px;">
+
+<h2>🔐 Admin Login</h2>
+
+<input id="email" placeholder="Email"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+
+<button onclick="adminLogin()">Login</button>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getAuth,
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// 🔥 YOUR FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyBtRcPSgV49ybyLcH1P9Ar5GJoUEOdhNvQ",
   authDomain: "kyp-result-portal.firebaseapp.com",
   projectId: "kyp-result-portal",
   storageBucket: "kyp-result-portal.firebasestorage.app",
   messagingSenderId: "454908710797",
-  appId: "1:454908710797:web:4ddac5514e53f15819f7c4",
-  measurementId: "G-L94BZ8H6MV"
+  appId: "1:454908710797:web:4ddac5514e53f15819f7c4"
 };
 
-// 🔥 INIT
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ✅ MAIN LOGIN FUNCTION (FINAL)
 window.adminLogin = async function () {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-
-  if (!email || !password) {
-    alert("Email aur password dalo");
-    return;
-  }
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   try {
-    // 🔐 Firebase login
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCred.user;
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const uid = userCredential.user.uid;
 
-    // 🔍 Firestore me admin check (EMAIL se)
-    const q = query(collection(db, "admins"), where("email", "==", email));
-    const snap = await getDocs(q);
+    const docSnap = await getDoc(doc(db, "admins", uid));
 
-    if (snap.empty) {
-      alert("Admin record not found ❌");
+    if (!docSnap.exists()) {
+      alert("Admin record not found");
       return;
     }
 
-    // ✅ role check
-    const adminData = snap.docs[0].data();
+    window.location.href = "admin.html";
 
-    if (adminData.role === "superadmin" || adminData.role === "assistant") {
-      alert("Login Successful ✅");
-
-      // 🔥 role save (optional)
-      localStorage.setItem("adminRole", adminData.role);
-
-      // 🚀 redirect
-      window.location.href = "admin.html";
-    } else {
-      alert("Access denied ❌");
-    }
-
-  } catch (error) {
-    console.error(error);
-    alert("Login Failed: " + error.message);
+  } catch (err) {
+    alert("Login Failed: " + err.message);
   }
 };
 </script>
+
+</body>
+</html>
