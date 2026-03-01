@@ -1,80 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Admin Login</title>
-<style>
-body{
-  font-family:Arial;
-  background:#0b1a33;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.box{
-  background:white;
-  padding:30px;
-  width:320px;
-  border-radius:12px;
-}
-input,button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-}
-button{
-  background:#2563eb;
-  color:white;
-  border:none;
-}
-</style>
-</head>
-
-<body>
-
-<div class="box">
-<h3>🔐 Admin Login</h3>
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
-</div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig={
-apiKey:"AIzaSyBtRcPSgV49ybyLcH1P9Ar5GJoUEOdhNvQ",
-authDomain:"kyp-result-portal.firebaseapp.com",
-projectId:"kyp-result-portal"
+const firebaseConfig = {
+  apiKey: "AIzaSyBtRcPSgV49ybyLcH1P9Ar5GJoUEOdhNvQ",
+  authDomain: "kyp-result-portal.firebaseapp.com",
+  projectId: "kyp-result-portal",
+  storageBucket: "kyp-result-portal.firebasestorage.app",
+  messagingSenderId: "454908710797",
+  appId: "1:454908710797:web:4ddac5514e53f15819f7c4"
 };
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-window.login=async function(){
-const email=document.getElementById("email").value;
-const pass=document.getElementById("password").value;
+window.loginAdmin = async function () {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-try{
-const user=await signInWithEmailAndPassword(auth,email,pass);
-const snap=await getDoc(doc(db,"admins",user.user.uid));
-const role=snap.data().role;
+  try {
+    // 🔥 Firebase login
+    const userCred = await signInWithEmailAndPassword(auth, email, password);
+    const uid = userCred.user.uid;
 
-if(role==="superadmin"){
-location.href="admin-dashboard.html";
-}else{
-location.href="assistant-dashboard.html";
-}
-}catch(e){
-alert("Login Failed");
-}
-}
+    // 🔥 Firestore role check
+    const docRef = doc(db, "admins", uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const role = docSnap.data().role;
+
+      if (role === "superadmin" || role === "assistant") {
+        window.location.href = "admin.html";
+      } else {
+        alert("Access Denied");
+      }
+    } else {
+      alert("No admin record found");
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Login Failed: " + err.message);
+  }
+};
 </script>
-
-</body>
-</html>
