@@ -1,65 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Admin Login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body{
-  margin:0;
-  font-family:Arial, Helvetica, sans-serif;
-  background:#071a3d;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-
-.login-box{
-  background:#fff;
-  padding:30px;
-  border-radius:12px;
-  width:320px;
-  text-align:center;
-  box-shadow:0 0 20px rgba(0,0,0,0.3);
-}
-
-input{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:6px;
-  border:1px solid #ccc;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  background:#1e4ed8;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  font-size:16px;
-}
-
-button:hover{
-  background:#1639a6;
-}
-</style>
-</head>
-
-<body>
-
-<div class="login-box">
-  <h2>🔐 Admin Login</h2>
-  <input type="email" id="email" placeholder="Enter Email">
-  <input type="password" id="password" placeholder="Enter Password">
-  <button onclick="loginAdmin()">Login</button>
-</div>
-
-<!-- ✅ Firebase Script -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -78,34 +16,33 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-window.loginAdmin = async function () {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-
-  if(!email || !password){
-    alert("Enter email and password");
-    return;
-  }
+window.adminLogin = async function () {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   try {
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    const uid = userCred.user.uid;
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const uid = userCredential.user.uid;
 
+    // ✅ UID se admin check
     const docRef = doc(db, "admins", uid);
     const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      window.location.href = "admin.html";
-    } else {
+    if (!docSnap.exists()) {
       alert("Admin record not found");
+      return;
     }
 
-  } catch (err) {
-    console.error(err);
-    alert("Login Failed: " + err.message);
+    const data = docSnap.data();
+
+    if (data.role === "superadmin" || data.role === "admin") {
+      window.location.href = "admin.html";
+    } else {
+      alert("Not authorized");
+    }
+
+  } catch (error) {
+    alert("Login Failed: " + error.message);
   }
 };
 </script>
-
-</body>
-</html>
