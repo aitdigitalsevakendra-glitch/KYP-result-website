@@ -7,23 +7,21 @@
 
 <style>
 
-/* ===== RESET ===== */
-*{
+/* ===== FULL IMAGE FIT ALL DEVICES ===== */
+
+body{
   margin:0;
   padding:0;
-  box-sizing:border-box;
-  font-family: Arial, sans-serif;
-}
+  min-height:100vh;
 
-/* ===== BACKGROUND SLIDER ===== */
-.bg-slider{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:-1;
-  overflow:hidden;
+  /* multiple background */
+  background:
+    url('bg1.jpg') center center / contain no-repeat,
+    url('bg2.jpg') center center / contain no-repeat,
+    #9c1c6c; /* fallback color */
+
+  background-attachment: fixed;
+  background-blend-mode: normal;
 }
 
 .bg-slider img{
@@ -218,4 +216,5 @@ s0.parentNode.insertBefore(s1,s0);
 
 </body>
 </html>
+
 
