@@ -1,108 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>KYP Result Portal</title>
+<title>Admin Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body{
   margin:0;
-  font-family: Arial;
-  min-height:100vh;
-  background:
-    linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)),
-    url('bg1.jpg') center/contain no-repeat,
-    url('bg2.jpg') center/contain no-repeat,
-    #9c1c5a;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  font-family: Arial, sans-serif;
 }
 
-.form-box{
-  background:rgba(255,255,255,0.95);
-  padding:25px;
-  border-radius:14px;
-  width:320px;
-  box-shadow:0 10px 40px rgba(0,0,0,.4);
-}
-
-input,select,button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-}
-
-button{
-  background:#2563eb;
+/* Sidebar */
+.sidebar{
+  position: fixed;
+  left:0;
+  top:0;
+  width:220px;
+  height:100%;
+  background:#0d1b2a;
   color:white;
-  border:none;
-  font-weight:bold;
-  cursor:pointer;
+  padding-top:20px;
 }
-.top-btn{
-  position:fixed;
-  top:15px;
-  right:15px;
+
+.sidebar h2{
+  text-align:center;
+}
+
+.sidebar a{
+  display:block;
+  color:white;
+  padding:12px;
+  text-decoration:none;
+}
+
+.sidebar a:hover{
+  background:#1b263b;
+}
+
+/* Main */
+.main{
+  margin-left:220px;
+  padding:20px;
+}
+
+.topbar{
+  background:#1b263b;
+  color:white;
+  padding:12px;
+  font-size:18px;
 }
 </style>
 </head>
 
 <body>
 
-<button class="top-btn" onclick="location.href='admin-login.html'">
-🔐 Admin Login
-</button>
-
-<div class="form-box">
-<h3 align="center">🔥 KYP RESULT</h3>
-
-<input id="code" placeholder="Learner Code *" required>
-<input id="name" placeholder="Learner Name">
-
-<select id="batch">
-<option value="">Select Batch</option>
-<option>GGR</option>
-<option>GJ</option>
-</select>
-
-<button onclick="checkResult()">Check Result</button>
-
-<div id="result"></div>
+<!-- ✅ Sidebar -->
+<div class="sidebar">
+  <h2>🔥 Admin</h2>
+  <a href="#">Dashboard</a>
+  <a href="#">Students</a>
+  <a href="#">Results</a>
+  <a href="#">Assistants</a>
+  <a href="#">Settings</a>
+  <a href="admin-login.html">Logout</a>
 </div>
 
-<script>
-async function checkResult(){
-  const code=document.getElementById("code").value;
+<!-- ✅ Main Content -->
+<div class="main">
+  <div class="topbar">Super Admin Panel</div>
 
-  const res=await fetch("results.json");
-  const data=await res.json();
-
-  const student=data.find(s=>s.code===code);
-
-  if(student){
-    document.getElementById("result").innerHTML=
-      "✅ Result: "+student.result;
-  }else{
-    document.getElementById("result").innerHTML=
-      "❌ Not Found";
-  }
-}
-</script>
-
-<!-- Tawk.to Live Chat -->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/69a3d02f9825341c3747c299/1jijuafa7';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
+  <h1>Welcome Admin 👋</h1>
+  <p>Yahan se aap sab control kar sakte hain.</p>
+</div>
 
 </body>
 </html>
