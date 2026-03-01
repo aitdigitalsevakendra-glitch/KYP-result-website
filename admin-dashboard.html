@@ -1,27 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Super Admin</title>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
-body{font-family:Arial;background:#0b1a33;color:white;padding:20px}
-input,button{padding:10px;margin:5px}
-button{background:#2563eb;color:white;border:none}
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f1f5f9;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;
+  height:100vh;
+  background:#1e293b;
+  color:white;
+  position:fixed;
+  padding-top:20px;
+}
+
+.sidebar h2{
+  text-align:center;
+}
+
+.menu{
+  padding:12px 20px;
+  cursor:pointer;
+}
+
+.menu:hover{
+  background:#334155;
+}
+
+/* MAIN */
+.main{
+  margin-left:220px;
+  padding:20px;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
 </style>
 </head>
+
 <body>
 
-<h2>🔥 SUPER ADMIN PANEL</h2>
+<div class="sidebar">
+  <h2>DCE</h2>
 
-<input id="code" placeholder="Learner Code">
-<input id="name" placeholder="Name">
-<input id="batch" placeholder="Batch">
-<input id="result" placeholder="Result">
+  <div class="menu">Dashboard</div>
+  <div class="menu">Students</div>
+  <div class="menu">Exams</div>
+  <div class="menu">Certificates</div>
+  <div class="menu" onclick="logout()">Logout</div>
+</div>
 
-<button onclick="addStudent()">Add Student</button>
+<div class="main">
+  <div class="card">
+    <h2>Welcome Admin 🎉</h2>
+    <p>Login successful.</p>
+  </div>
+
+  <div class="card">
+    <h3>Total Students: 0</h3>
+  </div>
+</div>
 
 <script>
-async function addStudent(){
-alert("Student Added (demo)");
+function logout(){
+  window.location.href="admin-login.html";
 }
 </script>
 
