@@ -1,282 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KYP Result Portal PRO</title>
-
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family: Arial, sans-serif;
-}
-
-body{
-  min-height:100vh;
-  background:#a01863;
-}
-
-/* BACKGROUND */
-.bg-wrapper{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  display:flex;
-  flex-direction:column;
-}
-
-.bg-wrapper img{
-  width:100%;
-  height:50vh;
-  object-fit:contain;
-  background:#a01863;
-}
-
-/* HEADER */
-.header-text{
-  text-align:center;
-  font-size:28px;
-  font-weight:bold;
-  color:#00ff66;
-  text-shadow:0 0 10px #00ff66;
-  margin:20px 0;
-}
-
-/* CENTER */
-.main{
-  min-height:70vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-}
-
-.container{
-  width:100%;
-  max-width:430px;
-  background:rgba(255,255,255,0.97);
-  padding:24px;
-  border-radius:16px;
-  box-shadow:0 20px 50px rgba(0,0,0,0.45);
-}
-
-/* INPUT */
-input,select,button{
-  width:100%;
-  padding:13px;
-  margin-top:12px;
-  font-size:15px;
-  border-radius:8px;
-  border:1px solid #ccc;
-}
-
-button{
-  background:#0d6efd;
-  color:#fff;
-  border:none;
-  font-weight:bold;
-  cursor:pointer;
-  transition:.3s;
-}
-
-button:hover{
-  background:#0b5ed7;
-  transform:translateY(-1px);
-}
-
-/* RESULT */
-.result-box{
-  margin-top:15px;
-  padding:14px;
-  border-radius:10px;
-  display:none;
-  text-align:center;
-  font-weight:bold;
-  animation:fadeIn .5s ease;
-}
-
-.pass{ background:#d4edda; color:#155724; }
-.fail{ background:#f8d7da; color:#721c24; }
-.pending{ background:#fff3cd; color:#856404; }
-
-/* LOADER */
-.loader-box{
-  display:none;
-  text-align:center;
-  margin-top:18px;
-}
-
-.loader{
-  width:70px;
-  height:70px;
-  border:6px solid #eee;
-  border-top:6px solid #0d6efd;
-  border-radius:50%;
-  margin:auto;
-  animation:spin 1s linear infinite;
-}
-
-.progress{
-  width:100%;
-  height:8px;
-  background:#eee;
-  border-radius:10px;
-  margin-top:14px;
-  overflow:hidden;
-}
-
-.progress-bar{
-  height:100%;
-  width:0%;
-  background:#0d6efd;
-  transition:.3s;
-}
-
-.scan-text{
-  margin-top:10px;
-  font-weight:bold;
-  color:#333;
-}
-
-@keyframes spin{
-  100%{ transform:rotate(360deg); }
-}
-
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(10px);}
-  to{opacity:1; transform:translateY(0);}
-}
-</style>
-</head>
-
-<body>
-
-<div class="bg-wrapper">
-  <img src="bg1.jpg">
-  <img src="bg2.jpg">
-</div>
-
-<h1 class="header-text">🔥 KUSHAL YUVA PROGRAM 🔥</h1>
-
-<div class="main">
-  <div class="container">
-
-    <input type="text" id="code" placeholder="Learner Code *">
-    <input type="text" id="name" placeholder="Learner Name (Optional)">
-
-    <select id="batch">
-      <option value="">Select Batch *</option>
-      <option>September 2025</option>
-      <option>October 2025</option>
-      <option>November 2025</option>
-    </select>
-
-    <button onclick="checkResult()">🚀 Check Result</button>
-
-    <!-- LOADER -->
-    <div id="loaderBox" class="loader-box">
-      <div class="loader"></div>
-      <div class="scan-text" id="scanText">Verifying Records...</div>
-      <div class="progress">
-        <div id="progressBar" class="progress-bar"></div>
-      </div>
-    </div>
-
-    <!-- RESULT -->
-    <div id="resultBox" class="result-box"></div>
-
-  </div>
-</div>
-
 <script>
+
 async function checkResult(){
 
   const code=document.getElementById("code").value.trim();
-  const name=document.getElementById("name").value.trim().toLowerCase();
   const batch=document.getElementById("batch").value;
-
-  const loaderBox=document.getElementById("loaderBox");
-  const progressBar=document.getElementById("progressBar");
   const resultBox=document.getElementById("resultBox");
 
   if(!code || !batch){
-    alert("Please enter Learner Code and Select Batch");
+    alert("Enter Learner Code & Select Batch");
     return;
   }
 
-  resultBox.style.display="none";
-  loaderBox.style.display="block";
-  progressBar.style.width="0%";
+  const res=await fetch("results.json");
+  const data=await res.json();
 
-  let progress=0;
+  const student=data.find(s =>
+    s.learnerCode===code && s.batch===batch
+  );
 
-  const fakeScan=setInterval(()=>{
-    progress+=10;
-    progressBar.style.width=progress+"%";
+  if(student){
 
-    if(progress>=100){
-      clearInterval(fakeScan);
-      setTimeout(loadResult,500);
+    let statusClass =
+      student.finalStatus==="PASS" ? "pass" :
+      student.finalStatus==="FAIL" ? "fail" :
+      "pending";
+
+    resultBox.className="result-box "+statusClass;
+    resultBox.style.display="block";
+
+    let certificateSection = "";
+
+    if(student.finalStatus==="PASS" && student.certificate){
+
+      certificateSection = `
+        <br><br>
+        <b>Certificate:</b><br><br>
+
+        <iframe src="${student.certificate}" width="100%" height="300px"></iframe>
+
+        <br><br>
+        <a href="${student.certificate}" download>
+          <button style="background:green;">📄 Download Certificate</button>
+        </a>
+      `;
     }
-  },150);
 
-  async function loadResult(){
-    try{
-      const res=await fetch("results.json");
-      const data=await res.json();
+    resultBox.innerHTML = `
+      <b>Name:</b> ${student.name}<br>
+      <b>Batch:</b> ${student.batch}<br><br>
 
-      const student=data.find(s =>
-        s.learnerCode===code &&
-        s.batch===batch &&
-        (name==="" || s.name.toLowerCase().includes(name))
-      );
+      <b>BS-CIT:</b> ${student.bs_cit}<br>
+      <b>BS-CSS:</b> ${student.bs_css}<br>
+      <b>BS-CLS:</b> ${student.bs_cls}<br><br>
 
-      loaderBox.style.display="none";
+      <b>Final Status:</b> ${student.finalStatus}
 
-      if(student){
+      ${certificateSection}
+    `;
 
-        let statusClass =
-          student.status==="PASS" ? "pass" :
-          student.status==="FAIL" ? "fail" :
-          "pending";
-
-        resultBox.className="result-box "+statusClass;
-        resultBox.style.display="block";
-
-        let certificateBtn = "";
-
-        if(student.status==="PASS" && student.certificate){
-          certificateBtn = `
-            <br><br>
-            <a href="${student.certificate}" target="_blank">
-              <button style="background:green;">📄 Download Certificate</button>
-            </a>
-          `;
-        }
-
-        resultBox.innerHTML = `
-          ✅ Result Found<br><br>
-          Name: ${student.name}<br>
-          Batch: ${student.batch}<br><br>
-          Status: ${student.status}
-          ${certificateBtn}
-        `;
-
-      }else{
-        resultBox.className="result-box fail";
-        resultBox.style.display="block";
-        resultBox.innerHTML="❌ No Record Found";
-      }
-
-    }catch(e){
-      loaderBox.style.display="none";
-      alert("results.json load error");
-    }
+  }else{
+    resultBox.className="result-box fail";
+    resultBox.style.display="block";
+    resultBox.innerHTML="❌ No Record Found";
   }
 }
-</script>
 
-</body>
-</html>
+</script>
