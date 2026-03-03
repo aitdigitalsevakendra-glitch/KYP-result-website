@@ -12,16 +12,7 @@
   box-sizing:border-box;
   font-family:"Times New Roman", serif;
 }
-<div id="disclaimerBox" class="disclaimer">
-  <div class="disclaimer-content">
-    <p>
-      This website is managed by <b>Creation Welfare Society KYP Center</b>. 
-      This is not the official website of BSDM. 
-      For official information visit the official BSDM portal.
-    </p>
-    <button onclick="closeDisclaimer()">Close</button>
-  </div>
-</div>
+
 body{
   background:#eaeaea;
   padding:20px;
@@ -109,24 +100,60 @@ input,button{
   transform:rotate(-15deg);
 }
 
-  .watermark{
+.watermark{
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%) rotate(-30deg);
-  font-size:55px;          /* Bigger */
-  font-weight:bold;        /* Bold */
-  color:#cc0000;           /* Dark red */
-  opacity:0.18;            /* More visible */
+  font-size:55px;
+  font-weight:bold;
+  color:#cc0000;
+  opacity:0.18;
   letter-spacing:4px;
   pointer-events:none;
   text-transform:uppercase;
+}
+
+/* ===== Disclaimer Style ===== */
+.disclaimer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#111;
+  color:#fff;
+  padding:12px 20px;
+  z-index:9999;
+  box-shadow:0 -2px 10px rgba(0,0,0,0.5);
+}
+
+.disclaimer-content{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  font-size:14px;
+}
+
+.disclaimer button{
+  background:#ffcc00;
+  border:none;
+  padding:6px 12px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.disclaimer button:hover{
+  background:#ffaa00;
 }
 
 @media print{
   body{background:white;}
   .search-box{display:none;}
   .watermark{opacity:0.03;}
+  .disclaimer{display:none;}
 }
 </style>
 </head>
@@ -141,7 +168,24 @@ input,button{
 
 <div id="resultContainer"></div>
 
+<!-- ===== Disclaimer Added Here ===== -->
+<div id="disclaimerBox" class="disclaimer">
+  <div class="disclaimer-content">
+    <p>
+      This website is managed by <b>Creation Welfare Society KYP Center</b>. 
+      This is not the official website of BSDM. 
+      For official information visit the official BSDM portal.
+    </p>
+    <button onclick="closeDisclaimer()">Close</button>
+  </div>
+</div>
+
 <script>
+
+function closeDisclaimer(){
+  document.getElementById("disclaimerBox").style.display="none";
+}
+
 async function checkResult(){
 
   const code=document.getElementById("code").value.trim();
@@ -223,7 +267,6 @@ async function checkResult(){
     </div>
 
     ${sealSection}
-
     ${signatureSection}
 
   </div>
@@ -239,7 +282,3 @@ async function checkResult(){
 
 </body>
 </html>
-
-
-
-
