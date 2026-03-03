@@ -1,74 +1,44 @@
 [
-  {
-    "learnerCode": "3745838225081951",
-    "name": "CHHOTI DARAKSA",
-    "batch": "August 2025",
-    "bs_cit": "PASS",
-    "bs_cls": "PASS",
-    "bs_css": "PASS",
-    "certificate": "certificates/3745838225081951.pdf"
-  },
-  {
-    "learnerCode": "3749631725082251",
-    "name": "MD NASAR RAZA",
-    "batch": "August 2025",
-    "bs_cit": "PASS",
-    "bs_cls": "PASS",
-    "bs_css": "PASS",
-    "certificate": "certificates/3749631725082251.pdf"
-  },
-  {
-    "learnerCode": "3749631825082251",
-    "name": "NADIR ALAM",
-    "batch": "August 2025",
-    "bs_cit": "PASS",
-    "bs_cls": "PASS",
-    "bs_css": "PASS",
-    "certificate": "certificates/3749631825082251.pdf"
-  },
-  {
-    "learnerCode": "3751768225091851",
-    "name": "GAUSIYA BEGUM",
-    "batch": "September 2025",
-    "bs_cit": "PASS",
-    "bs_cls": "PASS",
-    "bs_css": "PASS",
-    "certificate": "certificates/3751768225091851.pdf"
-  },
-  {
-    "learnerCode": "3754135325091851",
-    "name": "JINAT PERWEEN",
-    "batch": "September 2025",
-    "bs_cit": "PASS",
-    "bs_cls": "PASS",
-    "bs_css": "PASS",
-    "certificate": "certificates/3754135325091851.pdf"
-  },
-  {
-    "learnerCode": "3757080025092351",
-    "name": "KAHKASHA TARNNUM",
-    "batch": "September 2025",
-    "bs_cit": "PASS",
-    "bs_cls": "PASS",
-    "bs_css": "PASS",
-    "certificate": "certificates/3757080025092351.pdf"
-  },
-  {
-    "learnerCode": "3758526725092651",
-    "name": "TAKSIR ALAM",
-    "batch": "September 2025",
-    "bs_cit": "PASS",
-    "bs_cls": "PASS",
-    "bs_css": "PASS",
-    "certificate": "certificates/3758526725092651.pdf"
-  },
-  {
-    "learnerCode": "3759425925101851",
-    "name": "TARANNUM PERWEEN",
-    "batch": "October 2025",
-    "bs_cit": "PASS",
-    "bs_cls": "PASS",
-    "bs_css": "PASS",
-    "certificate": "certificates/3759425925101851.pdf"
-  }
-]
+{"learnerCode":"3392135523061451","name":"AARSHI DULARI","batch":"September 2025","status":"PASS"},
+{"learnerCode":"3754131825091851","name":"ALIYA PERWEEN","batch":"September 2025","status":"PENDING"},
+{"learnerCode":"3754134325091851","name":"TOSHIMA NOORI","batch":"September 2025","status":"PENDING"},
+{"learnerCode":"3754134425091851","name":"TAJALLI BEGAM","batch":"September 2025","status":"PASS"},
+{"learnerCode":"3754134525091851","name":"SHAYEED AFRIDI","batch":"September 2025","status":"PASS"},
+{"learnerCode":"3754134725091851","name":"SOFIA PERWEEN","batch":"September 2025","status":"PASS"},
+{"learnerCode":"3754134925091851","name":"MD ROUF ALAM","batch":"September 2025","status":"PASS"},
+{"learnerCode":"3754135025091851","name":"NILUFAR BEGUM","batch":"September 2025","status":"PENDING"},
+{"learnerCode":"3754135125091851","name":"SANIYA MIRZA","batch":"September 2025","status":"PASS"},
+{"learnerCode":"3754135225091851","name":"NOOR TARANA","batch":"September 2025","status":"PASS"},
+{"learnerCode":"3754977325091851","name":"KOHINOOR KHANAM","batch":"September 2025","status":"PENDING"},
+{"learnerCode":"3754978525091851","name":"NISHAR ALAM","batch":"September 2025","status":"PASS"},
+{"learnerCode":"3757082325092351","name":"GULSABA TARANNUM","batch":"September 2025","status":"PASS"},
+{"learnerCode":"3757796425092651","name":"MASUM ALAM","batch":"September 2025","status":"PASS"},
+
+{"learnerCode":"3759426025101851","name":"RAHMATI BEGUM","batch":"October 2025","status":"PENDING"},
+{"learnerCode":"3759486325101851","name":"ARSHAD ALAM","batch":"October 2025","status":"PENDING"},
+{"learnerCode":"3759486425101851","name":"NAYAB JEEGAR","batch":"October 2025","status":"FAIL"},
+{"learnerCode":"3759750225101851","name":"AJMAT ARA","batch":"October 2025","status":"FAIL"},
+{"learnerCode":"3759750325101851","name":"DARAKHSHAN","batch":"October 2025","status":"PASS"},
+{"learnerCode":"3759750825101851","name":"IRATAJA AHMAD","batch":"October 2025","status":"FAIL"},
+{"learnerCode":"3759750925101851","name":"SUHANA PERWEEN","batch":"October 2025","status":"FAIL"},
+{"learnerCode":"3761142525101851","name":"SHAZIA FIRDOS","batch":"October 2025","status":"PASS"},
+{"learnerCode":"3761144025101851","name":"SANIA FIRDOS","batch":"October 2025","status":"PENDING"},
+{"learnerCode":"3761629325101851","name":"AHMADI KHATUN","batch":"October 2025","status":"FAIL"},
+{"learnerCode":"3762217525102251","name":"ARSI BEGAM","batch":"October 2025","status":"PENDING"},
+{"learnerCode":"3762433325102951","name":"AZHAR MAHMOOD","batch":"October 2025","status":"FAIL"},
+
+{"learnerCode":"3764305125111951","name":"SHAHENA PERWEEN","batch":"November 2025","status":"PENDING"},
+{"learnerCode":"3764598125111951","name":"SAREKA BEGUM","batch":"November 2025","status":"PENDING"},
+{"learnerCode":"3764599825111951","name":"SHAHNAZ PARWEEN","batch":"November 2025","status":"PASS"},
+{"learnerCode":"3764600225111951","name":"FAHMIDA ARA","batch":"November 2025","status":"PASS"},
+{"learnerCode":"3765053425111951","name":"MD FARID RAZA","batch":"November 2025","status":"PENDING"},
+{"learnerCode":"3765060925111951","name":"ROHAN KUMAR","batch":"November 2025","status":"PENDING"},
+{"learnerCode":"3765309125111951","name":"MD SAMDANI","batch":"November 2025","status":"PENDING"},
+{"learnerCode":"3765312725111951","name":"MOHAMMAD MUSTAFA","batch":"November 2025","status":"PENDING"},
+{"learnerCode":"3765503925111951","name":"KHUSHI BEGAM","batch":"November 2025","status":"PASS"},
+{"learnerCode":"3765506925111951","name":"AMIT KUMAR","batch":"November 2025","status":"PENDING"},
+{"learnerCode":"3766527225112051","name":"SHAFI ANWAR","batch":"November 2025","status":"PASS"},
+{"learnerCode":"3766965025112051","name":"ASHIYA PERWEEN","batch":"November 2025","status":"PASS"},
+{"learnerCode":"3768194625112151","name":"SHABNOOR ANSARI","batch":"November 2025","status":"PENDING"},
+{"learnerCode":"3768527325112451","name":"SHAMA PARWEEN","batch":"November 2025","status":"PASS"},
+{"learnerCode":"3768604025112451","name":"NAZIYA PRAWEEN","batch":"November 2025","status":"PASS"}
