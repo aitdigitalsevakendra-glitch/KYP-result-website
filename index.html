@@ -3,33 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KYP Result</title>
+<title>KYP Result Portal - Ultra Pro</title>
 
 <style>
-
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
   margin:0;
   padding:10px;
-  background:#f2f2f2;
-  font-family:'Times New Roman', serif;
-}
-
-/* MAIN CONTAINER */
-.result-box{
-  width:100%;
-  max-width:800px;
-  margin:auto;
-  background:#fff;
-  border:3px solid #000;
-  padding:20px;
-  position:relative;
+  font-family: 'Times New Roman', serif;
+  background:#f5f5f5;
 }
 
 /* HEADER */
+.top-header{
+  text-align:center;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
+.top-header h2{
+  margin:5px 0;
+}
+
+/* SEARCH */
+.search-box{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+input{
+  padding:8px;
+  width:250px;
+  font-size:15px;
+}
+
+button{
+  padding:8px 15px;
+  cursor:pointer;
+}
+
+/* RESULT BOX */
+.result-box{
+  max-width:850px;
+  margin:auto;
+  background:#fff;
+  border:4px solid #000;
+  padding:20px;
+  display:none;
+  position:relative;
+}
+
+.watermark{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(-30deg);
+  font-size:60px;
+  color:red;
+  opacity:0.07;
+  pointer-events:none;
+}
+
 .header{
   text-align:center;
 }
@@ -41,24 +76,21 @@ body{
 
 .subtitle{
   font-size:18px;
-  margin-top:8px;
+  margin-bottom:10px;
 }
 
-/* QR */
 .qr{
-  width:120px;
+  width:130px;
   display:block;
-  margin:15px auto;
+  margin:10px auto;
 }
 
-/* VERIFICATION */
 .verify{
   text-align:center;
   font-weight:bold;
-  margin-bottom:15px;
+  margin-bottom:10px;
 }
 
-/* TABLE */
 table{
   width:100%;
   border-collapse:collapse;
@@ -68,41 +100,19 @@ table{
 th,td{
   border:1px solid #000;
   padding:8px;
-  font-size:15px;
+  font-size:14px;
   word-break:break-word;
 }
 
-th{
-  background:#eee;
-}
+th{background:#eee;}
 
-/* SUBJECT TABLE */
-.subject-table{
-  margin-top:15px;
-}
-
-/* FINAL RESULT */
 .final{
   text-align:center;
   font-size:22px;
   font-weight:bold;
-  color:green;
   margin-top:15px;
 }
 
-/* WATERMARK */
-.watermark{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) rotate(-30deg);
-  font-size:50px;
-  color:red;
-  opacity:0.08;
-  pointer-events:none;
-}
-
-/* SIGNATURE */
 .signature{
   text-align:center;
   margin-top:35px;
@@ -112,137 +122,139 @@ th{
   width:130px;
 }
 
-/* PRINT BUTTON */
-.print-btn{
-  text-align:center;
-  margin-bottom:15px;
+/* MOBILE */
+@media(max-width:600px){
+  .header h1{font-size:20px;}
+  th,td{font-size:12px;}
 }
 
-button{
-  padding:8px 20px;
-  font-size:15px;
-  cursor:pointer;
-}
-
-/* MOBILE FIX */
-@media (max-width:600px){
-
-  .header h1{
-    font-size:20px;
-  }
-
-  .subtitle{
-    font-size:15px;
-  }
-
-  th,td{
-    font-size:13px;
-    padding:6px;
-  }
-
-  .final{
-    font-size:18px;
-  }
-
-  .watermark{
-    font-size:35px;
-  }
-
-}
-
-/* PRINT FIX */
+/* PRINT */
 @media print{
-  body{
-    background:#fff;
-  }
-  .print-btn{
-    display:none;
-  }
-  .result-box{
-    border:3px solid #000;
-  }
+  .search-box{display:none;}
+  body{background:#fff;}
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="print-btn">
-  <button onclick="window.print()">Print Result</button>
+<div class="top-header">
+<h2>Government Skill Development Program</h2>
+<h2>Kushal Yuva Program (KYP)</h2>
 </div>
 
-<div class="result-box">
+<div class="search-box">
+<input type="text" id="code" placeholder="Enter Learner Code">
+<button onclick="searchResult()">Search</button>
+</div>
+
+<div class="result-box" id="resultBox">
 
 <div class="watermark">Creation Welfare Society</div>
 
 <div class="header">
-  <h1>KUSHAL YUVA PROGRAM</h1>
-  <div class="subtitle">Official Examination Result Sheet</div>
+<h1>OFFICIAL RESULT SHEET</h1>
+<div class="subtitle">Final Examination Certificate</div>
 </div>
 
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=3754978525091851" class="qr">
+<img id="qrCode" class="qr">
 
 <div class="verify">
-Verification ID: KYP-091851
+Verification ID: <span id="verifyId"></span>
 </div>
 
 <table>
 <tr>
 <th>Name</th>
-<td>NISHAR ALAM</td>
+<td id="name"></td>
 <th>Learner Code</th>
-<td>3754978525091851</td>
+<td id="learner"></td>
 </tr>
 
 <tr>
 <th>Batch</th>
-<td>September 2025</td>
+<td id="batch"></td>
 <th>Exam Date</th>
-<td>26-02-2026</td>
+<td id="examDate"></td>
 </tr>
 
 <tr>
 <th>Exam Time</th>
-<td>9:00-11:00</td>
+<td id="examTime"></td>
 <th>Center</th>
-<td>Creation Welfare Society</td>
+<td id="center"></td>
 </tr>
 </table>
 
-<table class="subject-table">
+<table>
 <tr>
 <th>Subject</th>
 <th>Status</th>
 </tr>
-
-<tr>
-<td>BS-CIT</td>
-<td>PASS</td>
-</tr>
-
-<tr>
-<td>BS-CSS</td>
-<td>PASS</td>
-</tr>
-
-<tr>
-<td>BS-CLS</td>
-<td>PASS</td>
-</tr>
+<tr><td>BS-CIT</td><td id="cit"></td></tr>
+<tr><td>BS-CSS</td><td id="css"></td></tr>
+<tr><td>BS-CLS</td><td id="cls"></td></tr>
 </table>
 
-<div class="final">
-FINAL RESULT: PASS
-</div>
+<div class="final" id="final"></div>
 
 <div class="signature">
 <img src="signature.png">
-<br>
-Authorized Signatory
+<br>Authorized Signatory
 </div>
 
 </div>
+
+<script>
+
+function searchResult(){
+
+const code = document.getElementById("code").value.trim();
+
+fetch("results.json")
+.then(res=>res.json())
+.then(data=>{
+
+const student = data.find(s=>s.learnerCode===code);
+
+if(!student){
+alert("No Record Found");
+return;
+}
+
+document.getElementById("resultBox").style.display="block";
+
+document.getElementById("name").innerText = student.name;
+document.getElementById("learner").innerText = student.learnerCode;
+document.getElementById("batch").innerText = student.batch;
+document.getElementById("examDate").innerText = student.examDate;
+document.getElementById("examTime").innerText = student.examTime;
+document.getElementById("center").innerText = student.centerName;
+
+document.getElementById("cit").innerText = student.bs_cit || "-";
+document.getElementById("css").innerText = student.bs_css || "-";
+document.getElementById("cls").innerText = student.bs_cls || "-";
+
+const final = document.getElementById("final");
+final.innerText = "FINAL RESULT: " + student.finalStatus;
+
+if(student.finalStatus==="PASS"){
+final.style.color="green";
+}else{
+final.style.color="red";
+}
+
+document.getElementById("verifyId").innerText="KYP-"+student.learnerCode.slice(-6);
+
+document.getElementById("qrCode").src=
+"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+
+window.location.href+"?code="+student.learnerCode;
+
+});
+
+}
+
+</script>
 
 </body>
 </html>
