@@ -100,15 +100,18 @@ input,button{
   transform:rotate(-15deg);
 }
 
-.watermark{
+  .watermark{
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%) rotate(-30deg);
-  font-size:60px;
-  color:red;
-  opacity:0.08;
+  font-size:75px;          /* Bigger */
+  font-weight:bold;        /* Bold */
+  color:#cc0000;           /* Dark red */
+  opacity:0.18;            /* More visible */
+  letter-spacing:4px;
   pointer-events:none;
+  text-transform:uppercase;
 }
 
 @media print{
@@ -227,4 +230,5 @@ async function checkResult(){
 
 </body>
 </html>
+
 
