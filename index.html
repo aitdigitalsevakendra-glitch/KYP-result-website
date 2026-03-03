@@ -99,8 +99,9 @@ button:hover{
 
 .pass{ background:#d4edda; color:#155724; }
 .fail{ background:#f8d7da; color:#721c24; }
+.pending{ background:#fff3cd; color:#856404; }
 
-/* 🔥 LOADER */
+/* LOADER */
 .loader-box{
   display:none;
   text-align:center;
@@ -117,7 +118,6 @@ button:hover{
   animation:spin 1s linear infinite;
 }
 
-/* PROGRESS BAR */
 .progress{
   width:100%;
   height:8px;
@@ -148,12 +148,6 @@ button:hover{
   from{opacity:0; transform:translateY(10px);}
   to{opacity:1; transform:translateY(0);}
 }
-
-@media(max-width:768px){
-  .bg-wrapper img{
-    height:45vh;
-  }
-}
 </style>
 </head>
 
@@ -170,24 +164,21 @@ button:hover{
   <div class="container">
 
     <input type="text" id="code" placeholder="Learner Code *">
-    <input type="text" id="name" placeholder="Learner Name">
+    <input type="text" id="name" placeholder="Learner Name (Optional)">
 
     <select id="batch">
-      <option value="">Select Batch</option>
-      <option>August 2025</option>
+      <option value="">Select Batch *</option>
       <option>September 2025</option>
       <option>October 2025</option>
       <option>November 2025</option>
-      <option>December 2025</option>
     </select>
 
     <button onclick="checkResult()">🚀 Check Result</button>
 
-    <!-- 🔥 LOADER -->
+    <!-- LOADER -->
     <div id="loaderBox" class="loader-box">
       <div class="loader"></div>
-      <div class="scan-text" id="scanText">AI Scanning...</div>
-
+      <div class="scan-text" id="scanText">Verifying Records...</div>
       <div class="progress">
         <div id="progressBar" class="progress-bar"></div>
       </div>
@@ -204,14 +195,14 @@ async function checkResult(){
 
   const code=document.getElementById("code").value.trim();
   const name=document.getElementById("name").value.trim().toLowerCase();
+  const batch=document.getElementById("batch").value;
 
   const loaderBox=document.getElementById("loaderBox");
   const progressBar=document.getElementById("progressBar");
   const resultBox=document.getElementById("resultBox");
-  const scanText=document.getElementById("scanText");
 
-  if(!code){
-    alert("Please enter Learner Code");
+  if(!code || !batch){
+    alert("Please enter Learner Code and Select Batch");
     return;
   }
 
@@ -227,30 +218,52 @@ async function checkResult(){
 
     if(progress>=100){
       clearInterval(fakeScan);
-      scanText.innerHTML="✅ You are ready — Welcome 🎉";
-      setTimeout(loadResult,1000);
+      setTimeout(loadResult,500);
     }
-  },300);
+  },150);
 
   async function loadResult(){
     try{
       const res=await fetch("results.json");
       const data=await res.json();
 
-      const student=data.find(s=>
-        s.code===code &&
+      const student=data.find(s =>
+        s.learnerCode===code &&
+        s.batch===batch &&
         (name==="" || s.name.toLowerCase().includes(name))
       );
 
       loaderBox.style.display="none";
 
       if(student){
-        resultBox.className="result-box pass";
+
+        let statusClass =
+          student.status==="PASS" ? "pass" :
+          student.status==="FAIL" ? "fail" :
+          "pending";
+
+        resultBox.className="result-box "+statusClass;
         resultBox.style.display="block";
-        resultBox.innerHTML=
-          "✅ Result Found<br>" +
-          "Name: "+student.name+"<br>" +
-          "Status: "+student.status;
+
+        let certificateBtn = "";
+
+        if(student.status==="PASS" && student.certificate){
+          certificateBtn = `
+            <br><br>
+            <a href="${student.certificate}" target="_blank">
+              <button style="background:green;">📄 Download Certificate</button>
+            </a>
+          `;
+        }
+
+        resultBox.innerHTML = `
+          ✅ Result Found<br><br>
+          Name: ${student.name}<br>
+          Batch: ${student.batch}<br><br>
+          Status: ${student.status}
+          ${certificateBtn}
+        `;
+
       }else{
         resultBox.className="result-box fail";
         resultBox.style.display="block";
@@ -258,23 +271,11 @@ async function checkResult(){
       }
 
     }catch(e){
+      loaderBox.style.display="none";
       alert("results.json load error");
     }
   }
 }
-</script>
-
-<!-- Tawk -->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/69a3d02f9825341c3747c299/1jijuafa7';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
 </script>
 
 </body>
