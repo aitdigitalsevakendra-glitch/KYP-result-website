@@ -2,259 +2,234 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Verified Official Result Sheet</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KYP Result Portal - Ultra Pro</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
-*{box-sizing:border-box;}
+*{
+  box-sizing:border-box;
+  font-family:"Times New Roman", serif;
+}
 
 body{
-  margin:0;
-  padding:10px;
-  font-family: 'Times New Roman', serif;
-  background:#f5f5f5;
+  background:#eaeaea;
+  padding:20px;
 }
 
-/* HEADER */
-.top-header{
-  text-align:center;
-  font-weight:bold;
-  margin-bottom:15px;
-}
-
-.top-header h2{
-  margin:5px 0;
-}
-
-/* SEARCH */
 .search-box{
   text-align:center;
   margin-bottom:20px;
 }
 
-input{
-  padding:8px;
-  width:250px;
-  font-size:15px;
+input,button{
+  padding:8px 12px;
+  font-size:14px;
+  margin:5px;
 }
 
-button{
-  padding:8px 15px;
-  cursor:pointer;
-}
-
-/* RESULT BOX */
-.result-box{
-  max-width:850px;
+.result-sheet{
+  max-width:900px;
   margin:auto;
   background:#fff;
-  border:4px solid #000;
-  padding:20px;
-  display:none;
+  padding:30px;
+  border:3px solid #000;
   position:relative;
-}
-
-.watermark{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) rotate(-30deg);
-  font-size:60px;
-  color:red;
-  opacity:0.07;
-  pointer-events:none;
 }
 
 .header{
   text-align:center;
+  border-bottom:2px solid #000;
+  padding-bottom:10px;
+  margin-bottom:15px;
 }
 
-.header h1{
-  margin:0;
-  font-size:28px;
-}
-
-.subtitle{
-  font-size:18px;
-  margin-bottom:10px;
-}
-
-.qr{
-  width:130px;
-  display:block;
-  margin:10px auto;
-}
-
-.verify{
-  text-align:center;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-table{
+.info-table,
+.subject-table{
   width:100%;
   border-collapse:collapse;
   margin-top:10px;
 }
 
-th,td{
+.info-table td,
+.subject-table th,
+.subject-table td{
   border:1px solid #000;
   padding:8px;
-  font-size:14px;
-  word-break:break-word;
 }
 
-th{background:#eee;}
+.subject-table th{
+  background:#eee;
+}
 
 .final{
   text-align:center;
-  font-size:22px;
+  font-size:20px;
   font-weight:bold;
-  margin-top:15px;
+  margin-top:20px;
 }
+
+.pass{color:green;}
+.fail{color:red;}
 
 .signature{
-  text-align:center;
-  margin-top:35px;
+  text-align:right;
+  margin-top:40px;
 }
 
-.signature img{
-  width:130px;
+.sign-img{
+  width:180px;
+  height:auto;
 }
 
-/* MOBILE */
-@media(max-width:600px){
-  .header h1{font-size:20px;}
-  th,td{font-size:12px;}
+.qr-box{
+  position:absolute;
+  top:30px;
+  right:30px;
 }
 
-/* PRINT */
+.seal{
+  position:absolute;
+  bottom:90px;
+  left:40px;
+  font-size:20px;
+  color:green;
+  border:2px solid green;
+  padding:8px;
+  transform:rotate(-15deg);
+}
+
+  .watermark{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(-30deg);
+  font-size:55px;          /* Bigger */
+  font-weight:bold;        /* Bold */
+  color:#cc0000;           /* Dark red */
+  opacity:0.18;            /* More visible */
+  letter-spacing:4px;
+  pointer-events:none;
+  text-transform:uppercase;
+}
+
 @media print{
+  body{background:white;}
   .search-box{display:none;}
-  body{background:#fff;}
+  .watermark{opacity:0.03;}
 }
 </style>
 </head>
 
 <body>
 
-<div class="top-header">
-<h2>Government Skill Development Program</h2>
-<h2>Kushal Yuva Program (KYP)</h2>
-</div>
-
 <div class="search-box">
-<input type="text" id="code" placeholder="Enter Learner Code">
-<button onclick="searchResult()">Search</button>
+  <input type="text" id="code" placeholder="Enter Learner Code">
+  <button onclick="checkResult()">View Result</button>
+  <button onclick="window.print()">Print Result</button>
 </div>
 
-<div class="result-box" id="resultBox">
-
-<div class="watermark">Creation Welfare Society</div>
-
-<div class="header">
-<h1>OFFICIAL RESULT SHEET</h1>
-<div class="subtitle">Final Examination Certificate</div>
-</div>
-
-<img id="qrCode" class="qr">
-
-<div class="verify">
-Verification ID: <span id="verifyId"></span>
-</div>
-
-<table>
-<tr>
-<th>Name</th>
-<td id="name"></td>
-<th>Learner Code</th>
-<td id="learner"></td>
-</tr>
-
-<tr>
-<th>Batch</th>
-<td id="batch"></td>
-<th>Exam Date</th>
-<td id="examDate"></td>
-</tr>
-
-<tr>
-<th>Exam Time</th>
-<td id="examTime"></td>
-<th>Center</th>
-<td id="center"></td>
-</tr>
-</table>
-
-<table>
-<tr>
-<th>Subject</th>
-<th>Status</th>
-</tr>
-<tr><td>BS-CIT</td><td id="cit"></td></tr>
-<tr><td>BS-CSS</td><td id="css"></td></tr>
-<tr><td>BS-CLS</td><td id="cls"></td></tr>
-</table>
-
-<div class="final" id="final"></div>
-
-<div class="signature">
-<img src="signature.png">
-<br>Authorized Signatory
-</div>
-
-</div>
+<div id="resultContainer"></div>
 
 <script>
+async function checkResult(){
 
-function searchResult(){
+  const code=document.getElementById("code").value.trim();
+  const container=document.getElementById("resultContainer");
 
-const code = document.getElementById("code").value.trim();
+  if(!code){
+    alert("Enter Learner Code");
+    return;
+  }
 
-fetch("results.json")
-.then(res=>res.json())
-.then(data=>{
+  const res=await fetch("results.json");
+  const data=await res.json();
+  const student=data.find(s=>s.learnerCode===code);
 
-const student = data.find(s=>s.learnerCode===code);
+  if(!student){
+    container.innerHTML="<h2 style='text-align:center;color:red;'>No Record Found</h2>";
+    return;
+  }
 
-if(!student){
-alert("No Record Found");
-return;
+  const verifyURL = window.location.origin + window.location.pathname + "?verify=" + student.learnerCode;
+  const verificationID = "KYP-" + student.learnerCode.slice(-6);
+  let statusClass = student.finalStatus==="PASS" ? "pass":"fail";
+
+  let signatureSection = "";
+  let sealSection = "";
+
+  if(student.finalStatus==="PASS"){
+    signatureSection = `
+      <div class="signature">
+        <img src="signature.png" class="sign-img"><br>
+        <b>Authorized Signatory</b>
+      </div>
+    `;
+    sealSection = `<div class="seal">✓ Digitally Verified</div>`;
+  }
+
+  container.innerHTML=`
+  <div class="result-sheet">
+
+    <div class="watermark">SOFT COPY - NOT ORIGINAL</div>
+
+    <div class="qr-box">
+      <div id="qrcode"></div>
+    </div>
+
+    <div class="header">
+      <h1>KUSHAL YUVA PROGRAM</h1>
+      <h3>Official Examination Result Sheet</h3>
+      <p>Verification ID: <b>${verificationID}</b></p>
+    </div>
+
+    <table class="info-table">
+      <tr>
+        <td><b>Name</b></td><td>${student.name}</td>
+        <td><b>Learner Code</b></td><td>${student.learnerCode}</td>
+      </tr>
+      <tr>
+        <td><b>Batch</b></td><td>${student.batch}</td>
+        <td><b>Exam Date</b></td><td>${student.examDate || "-"}</td>
+      </tr>
+      <tr>
+        <td><b>Exam Time</b></td><td>${student.examTime || "-"}</td>
+        <td><b>Center</b></td><td>${student.centerName || "Creation Welfare Society"}</td>
+      </tr>
+    </table>
+
+    <table class="subject-table">
+      <tr>
+        <th>Subject</th>
+        <th>Status</th>
+      </tr>
+      <tr><td>BS-CIT</td><td>${student.bs_cit}</td></tr>
+      <tr><td>BS-CSS</td><td>${student.bs_css}</td></tr>
+      <tr><td>BS-CLS</td><td>${student.bs_cls}</td></tr>
+    </table>
+
+    <div class="final ${statusClass}">
+      FINAL RESULT: ${student.finalStatus}
+    </div>
+
+    ${sealSection}
+
+    ${signatureSection}
+
+  </div>
+  `;
+
+  new QRCode(document.getElementById("qrcode"), {
+      text: verifyURL,
+      width:100,
+      height:100
+  });
 }
-
-document.getElementById("resultBox").style.display="block";
-
-document.getElementById("name").innerText = student.name;
-document.getElementById("learner").innerText = student.learnerCode;
-document.getElementById("batch").innerText = student.batch;
-document.getElementById("examDate").innerText = student.examDate;
-document.getElementById("examTime").innerText = student.examTime;
-document.getElementById("center").innerText = student.centerName;
-
-document.getElementById("cit").innerText = student.bs_cit || "-";
-document.getElementById("css").innerText = student.bs_css || "-";
-document.getElementById("cls").innerText = student.bs_cls || "-";
-
-const final = document.getElementById("final");
-final.innerText = "FINAL RESULT: " + student.finalStatus;
-
-if(student.finalStatus==="PASS"){
-final.style.color="green";
-}else{
-final.style.color="red";
-}
-
-document.getElementById("verifyId").innerText="KYP-"+student.learnerCode.slice(-6);
-
-document.getElementById("qrCode").src=
-"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+
-window.location.href+"?code="+student.learnerCode;
-
-});
-
-}
-
 </script>
 
 </body>
 </html>
+
+
+
