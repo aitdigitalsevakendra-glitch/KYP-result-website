@@ -1,15 +1,12 @@
-{
+[
+  {
     "learnerCode": "3392135523061451",
     "name": "AARSHI DULARI",
     "batch": "September 2025",
-    "status": "PASS",
+    "bs_cit": "PASS",
+    "bs_css": "PASS",
+    "bs_cls": "PASS",
+    "finalStatus": "PASS",
     "certificate": "certificates/3392135523061451.pdf"
-  },
-  {
-    "learnerCode": "3754134425091851",
-    "name": "TAJALLI BEGAM",
-    "batch": "September 2025",
-    "status": "PASS",
-    "certificate": "certificates/3754134425091851.pdf"
   }
 ]
