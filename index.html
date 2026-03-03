@@ -2,237 +2,234 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Verified Official Result Sheet</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KYP Result</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
-
-body{
-  margin:0;
-  padding:10px;
-  font-family: 'Times New Roman', serif;
-  background:#f2f2f2;
+*{
+  box-sizing:border-box;
+  font-family:"Times New Roman", serif;
 }
 
-.result-container{
-  max-width:800px;
-  width:100%;
+body{
+  background:#eaeaea;
+  padding:20px;
+}
+
+.search-box{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+input,button{
+  padding:8px 12px;
+  font-size:14px;
+  margin:5px;
+}
+
+.result-sheet{
+  max-width:900px;
   margin:auto;
   background:#fff;
-  padding:25px;
-  border:4px solid #000;
+  padding:30px;
+  border:3px solid #000;
   position:relative;
 }
 
-/* Header */
 .header{
   text-align:center;
-}
-
-.header h1{
-  font-size:32px;
-  margin:0;
-}
-
-.sub-title{
-  font-size:20px;
-  margin-top:10px;
-}
-
-.qr{
-  position:absolute;
-  top:25px;
-  right:25px;
-  width:130px;
-}
-
-.verification{
-  text-align:center;
-  margin-top:10px;
-  font-weight:bold;
-}
-
-/* Table */
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
-}
-
-table, th, td{
-  border:1px solid #000;
-}
-
-th, td{
-  padding:10px;
-  text-align:left;
-}
-
-/* Subject Table */
-.subject-table{
-  margin-top:20px;
-}
-
-/* Final Result */
-.final-result{
-  text-align:center;
-  font-size:24px;
-  font-weight:bold;
-  color:green;
-  margin-top:20px;
-}
-
-/* Watermark */
-.watermark{
-  position:absolute;
-  top:45%;
-  left:50%;
-  transform:translate(-50%,-50%) rotate(-30deg);
-  font-size:60px;
-  color:red;
-  opacity:0.1;
-  pointer-events:none;
-}
-
-/* Signature */
-.signature{
-  text-align:center;
-  margin-top:40px;
-}
-
-.signature img{
-  width:150px;
-}
-
-/* Print Button */
-.print-btn{
-  text-align:center;
+  border-bottom:2px solid #000;
+  padding-bottom:10px;
   margin-bottom:15px;
 }
 
-button{
-  padding:10px 20px;
-  font-size:16px;
-  cursor:pointer;
+.info-table,
+.subject-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
 }
 
-/* Mobile Responsive */
-@media screen and (max-width:768px){
+.info-table td,
+.subject-table th,
+.subject-table td{
+  border:1px solid #000;
+  padding:8px;
+}
 
-  .result-container{
-    padding:15px;
-  }
+.subject-table th{
+  background:#eee;
+}
 
-  .header h1{
-    font-size:22px;
-  }
+.final{
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  margin-top:20px;
+}
 
-  .qr{
-    position:static;
-    display:block;
-    margin:10px auto;
-  }
+.pass{color:green;}
+.fail{color:red;}
 
-  table{
-    font-size:14px;
-  }
+.signature{
+  text-align:right;
+  margin-top:40px;
+}
+
+.sign-img{
+  width:180px;
+  height:auto;
+}
+
+.qr-box{
+  position:absolute;
+  top:30px;
+  right:30px;
+}
+
+.seal{
+  position:absolute;
+  bottom:90px;
+  left:40px;
+  font-size:20px;
+  color:green;
+  border:2px solid green;
+  padding:8px;
+  transform:rotate(-15deg);
+}
 
   .watermark{
-    font-size:40px;
-  }
-
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(-30deg);
+  font-size:55px;          /* Bigger */
+  font-weight:bold;        /* Bold */
+  color:#cc0000;           /* Dark red */
+  opacity:0.18;            /* More visible */
+  letter-spacing:4px;
+  pointer-events:none;
+  text-transform:uppercase;
 }
 
-/* Hide Button on Print */
 @media print{
-  .print-btn{
-    display:none;
-  }
+  body{background:white;}
+  .search-box{display:none;}
+  .watermark{opacity:0.03;}
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="print-btn">
+<div class="search-box">
+  <input type="text" id="code" placeholder="Enter Learner Code">
+  <button onclick="checkResult()">View Result</button>
   <button onclick="window.print()">Print Result</button>
 </div>
 
-<div class="result-container">
+<div id="resultContainer"></div>
 
-<div class="watermark">Creation Welfare Society</div>
+<script>
+async function checkResult(){
 
-<div class="header">
-  <h1>KUSHAL YUVA PROGRAM</h1>
-  <div class="sub-title">Official Examination Result Sheet</div>
-</div>
+  const code=document.getElementById("code").value.trim();
+  const container=document.getElementById("resultContainer");
 
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=KYP-091851" class="qr">
+  if(!code){
+    alert("Enter Learner Code");
+    return;
+  }
 
-<div class="verification">
-  Verification ID: KYP-091851
-</div>
+  const res=await fetch("results.json");
+  const data=await res.json();
+  const student=data.find(s=>s.learnerCode===code);
 
-<hr>
+  if(!student){
+    container.innerHTML="<h2 style='text-align:center;color:red;'>No Record Found</h2>";
+    return;
+  }
 
-<table>
-<tr>
-  <th>Name</th>
-  <td>NISHAR ALAM</td>
-  <th>Learner Code</th>
-  <td>3754978525091851</td>
-</tr>
+  const verifyURL = window.location.origin + window.location.pathname + "?verify=" + student.learnerCode;
+  const verificationID = "KYP-" + student.learnerCode.slice(-6);
+  let statusClass = student.finalStatus==="PASS" ? "pass":"fail";
 
-<tr>
-  <th>Batch</th>
-  <td>September 2025</td>
-  <th>Exam Date</th>
-  <td>26-02-2026</td>
-</tr>
+  let signatureSection = "";
+  let sealSection = "";
 
-<tr>
-  <th>Exam Time</th>
-  <td>9:00-11:00</td>
-  <th>Center</th>
-  <td>Creation Welfare Society</td>
-</tr>
-</table>
+  if(student.finalStatus==="PASS"){
+    signatureSection = `
+      <div class="signature">
+        <img src="signature.png" class="sign-img"><br>
+        <b>Authorized Signatory</b>
+      </div>
+    `;
+    sealSection = `<div class="seal">✓ Digitally Verified</div>`;
+  }
 
-<table class="subject-table">
-<tr>
-  <th>Subject</th>
-  <th>Status</th>
-</tr>
+  container.innerHTML=`
+  <div class="result-sheet">
 
-<tr>
-  <td>BS-CIT</td>
-  <td>PASS</td>
-</tr>
+    <div class="watermark">SOFT COPY - NOT ORIGINAL</div>
 
-<tr>
-  <td>BS-CSS</td>
-  <td>PASS</td>
-</tr>
+    <div class="qr-box">
+      <div id="qrcode"></div>
+    </div>
 
-<tr>
-  <td>BS-CLS</td>
-  <td>PASS</td>
-</tr>
-</table>
+    <div class="header">
+      <h1>KUSHAL YUVA PROGRAM</h1>
+      <h3>Official Examination Result Sheet</h3>
+      <p>Verification ID: <b>${verificationID}</b></p>
+    </div>
 
-<div class="final-result">
-  FINAL RESULT: PASS
-</div>
+    <table class="info-table">
+      <tr>
+        <td><b>Name</b></td><td>${student.name}</td>
+        <td><b>Learner Code</b></td><td>${student.learnerCode}</td>
+      </tr>
+      <tr>
+        <td><b>Batch</b></td><td>${student.batch}</td>
+        <td><b>Exam Date</b></td><td>${student.examDate || "-"}</td>
+      </tr>
+      <tr>
+        <td><b>Exam Time</b></td><td>${student.examTime || "-"}</td>
+        <td><b>Center</b></td><td>${student.centerName || "Creation Welfare Society"}</td>
+      </tr>
+    </table>
 
-<div class="signature">
-  <img src="signature.png">
-  <br>
-  Authorized Signatory
-</div>
+    <table class="subject-table">
+      <tr>
+        <th>Subject</th>
+        <th>Status</th>
+      </tr>
+      <tr><td>BS-CIT</td><td>${student.bs_cit}</td></tr>
+      <tr><td>BS-CSS</td><td>${student.bs_css}</td></tr>
+      <tr><td>BS-CLS</td><td>${student.bs_cls}</td></tr>
+    </table>
 
-</div>
+    <div class="final ${statusClass}">
+      FINAL RESULT: ${student.finalStatus}
+    </div>
+
+    ${sealSection}
+
+    ${signatureSection}
+
+  </div>
+  `;
+
+  new QRCode(document.getElementById("qrcode"), {
+      text: verifyURL,
+      width:100,
+      height:100
+  });
+}
+</script>
 
 </body>
 </html>
+
+
+
