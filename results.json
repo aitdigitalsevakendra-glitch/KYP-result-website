@@ -1,15 +1,4 @@
-{
-        "learnerCode": "Learner Code",
-        "name": "Learner Name",
-        "batch": "Batch",
-        "examDate": "Exam Slot",
-        "examTime": "Exam Time",
-        "centerName": "Centerr Name",
-        "bs_cit": "",
-        "bs_css": "",
-        "bs_cls": "",
-        "finalStatus": "FAIL"
-    },
+},
     {
         "learnerCode": "3392135523061451",
         "name": "AARSHI  DULARI",
