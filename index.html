@@ -44,7 +44,7 @@ body{
   margin:20px 0;
 }
 
-/* CENTER BOX */
+/* CENTER */
 .main{
   min-height:70vh;
   display:flex;
@@ -55,8 +55,8 @@ body{
 
 .container{
   width:100%;
-  max-width:450px;
-  background:rgba(255,255,255,0.95);
+  max-width:500px;
+  background:rgba(255,255,255,0.96);
   padding:25px;
   border-radius:15px;
   box-shadow:0 20px 50px rgba(0,0,0,0.5);
@@ -65,7 +65,7 @@ body{
 input,select,button{
   width:100%;
   padding:12px;
-  margin-top:10px;
+  margin-top:12px;
   border-radius:8px;
   border:1px solid #ccc;
 }
@@ -95,10 +95,11 @@ button:hover{
 .fail{background:#f8d7da;color:#721c24;}
 .pending{background:#fff3cd;color:#856404;}
 
+/* CERTIFICATE */
 .watermark-container{
   position:relative;
   width:100%;
-  height:400px;
+  height:420px;
   margin-top:15px;
 }
 
@@ -106,6 +107,7 @@ iframe{
   width:100%;
   height:100%;
   border:none;
+  pointer-events:none;
 }
 
 .watermark-text{
@@ -113,13 +115,22 @@ iframe{
   top:50%;
   left:50%;
   transform:translate(-50%,-50%) rotate(-30deg);
-  font-size:38px;
+  font-size:42px;
   color:red;
   opacity:0.25;
   font-weight:bold;
   text-align:center;
   width:100%;
   pointer-events:none;
+}
+
+.signature-hide{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:150px;
+  background:white;
+  opacity:0.95;
 }
 
 .warning{
@@ -163,6 +174,12 @@ iframe{
 
 <script>
 
+document.addEventListener("keydown", function(e){
+  if(e.ctrlKey && (e.key === "s" || e.key === "p")){
+    e.preventDefault();
+  }
+});
+
 async function checkResult(){
 
   const code=document.getElementById("code").value.trim();
@@ -203,12 +220,16 @@ async function checkResult(){
         certificateSection=`
           <div class="watermark-container">
             <iframe src="${student.certificate}"></iframe>
+
             <div class="watermark-text">
               SOFT COPY – NOT ORIGINAL
             </div>
+
+            <div class="signature-hide"></div>
           </div>
+
           <div class="warning">
-            ⚠ Original Certificate Only Available at Center
+            ⚠ This is only a Soft Copy. Original Certificate Available at Center.
           </div>
         `;
       }
