@@ -54,7 +54,7 @@ body{
 
 .container{
   width:100%;
-  max-width:500px;
+  max-width:550px;
   background:rgba(255,255,255,0.96);
   padding:25px;
   border-radius:15px;
@@ -93,6 +93,22 @@ button:hover{
 .pass{background:#d4edda;color:#155724;}
 .fail{background:#f8d7da;color:#721c24;}
 .pending{background:#fff3cd;color:#856404;}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+}
+
+th,td{
+  border:1px solid #ccc;
+  padding:8px;
+  text-align:center;
+}
+
+th{
+  background:#f2f2f2;
+}
 
 /* Certificate */
 .watermark-container{
@@ -171,7 +187,6 @@ iframe{
 </div>
 
 <script>
-document.addEventListener("contextmenu", e => e.preventDefault());
 
 async function checkResult(){
 
@@ -186,7 +201,8 @@ async function checkResult(){
   }
 
   try{
-    const res=await fetch("./results.json");
+
+    const res=await fetch("results.json");
     const data=await res.json();
 
     const student=data.find(s =>
@@ -218,20 +234,42 @@ async function checkResult(){
             <div class="signature-hide"></div>
           </div>
           <div class="warning">
-            ⚠ Only Soft Copy. Original Available at Center.
+            ⚠ Only Soft Copy. Original Certificate Available at Center.
           </div>
         `;
       }
 
       resultBox.innerHTML=`
+        <h3>Candidate Details</h3>
         <b>Name:</b> ${student.name}<br>
-        <b>Batch:</b> ${student.batch}<br><br>
+        <b>Batch:</b> ${student.batch}<br>
+        <b>Exam Date:</b> ${student.examDate || "-"}<br>
+        <b>Exam Time:</b> ${student.examTime || "-"}<br><br>
 
-        <b>BS-CIT:</b> ${student.bs_cit || "-"}<br>
-        <b>BS-CSS:</b> ${student.bs_css || "-"}<br>
-        <b>BS-CLS:</b> ${student.bs_cls || "-"}<br><br>
+        <h3>Subject Wise Result</h3>
 
-        <b>Final Status:</b> ${student.finalStatus}
+        <table>
+          <tr>
+            <th>Subject</th>
+            <th>Status</th>
+          </tr>
+          <tr>
+            <td>BS-CIT</td>
+            <td>${student.bs_cit || "-"}</td>
+          </tr>
+          <tr>
+            <td>BS-CSS</td>
+            <td>${student.bs_css || "-"}</td>
+          </tr>
+          <tr>
+            <td>BS-CLS</td>
+            <td>${student.bs_cls || "-"}</td>
+          </tr>
+        </table>
+
+        <br>
+        <h3>Final Status: ${student.finalStatus}</h3>
+
         ${certificateSection}
       `;
 
